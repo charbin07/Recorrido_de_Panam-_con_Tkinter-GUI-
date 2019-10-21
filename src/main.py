@@ -1,6 +1,7 @@
 import tkinter as tk
 from src.Place import *
 
+
 #Clase base que controla los frames, recursos y switches del programa
 class SampleApp(tk.Tk):
     def __init__(self):
@@ -23,25 +24,20 @@ class MainMenu(tk.Frame):
     def __init__(self, master): #master representa la clase padre, todos las subclases deben incluirlo
         #setup del frame y recursos
         self.master = master# de esta forma de incluye
-        self.master.title("Aerolinea Arthur Ryan -MenuPrincipal")
+        self.master.title("Aerolinea Arthur Ryan- Proyecto1 Algoritmos")
         logo = tk.PhotoImage(file='../logo_FISC.png')
         self.master.tk.call('wm','iconphoto', self.master._w, logo)
-        bgMap = tk.PhotoImage(file="../Mapa_de_Panama_1.png")  # archivo fuente de la imagen del background
 
         tk.Frame.__init__(self, self.master)
         self.canvas = tk.Canvas(self, width=1200, height=500, bg='black')
         self.canvas.pack()
         #dibujar bg
+        bgMap = tk.PhotoImage(file="../Mapa_de_Panama_1.png")  # archivo fuente de la imagen del background
         bgImage = tk.Label(self, image=bgMap)
         bgImage.image = bgMap
         bgImage.place(x=0, y=0)
         #Despues de aqui, pon todos los objectos q quieras y recuerda hacer el llamado para hacer el cambio
         self.BotonesMapa()
-        # tk.Label(self, text="This is the start page").pack(side="top", fill="x", pady=10)
-        # tk.Button(self, text="Open page one",
-        #           command=lambda: master.switch_frame(LugarMenu)).pack()
-        # tk.Button(self, text="Open page two",
-        #           command=lambda: master.switch_frame(PageTwo)).pack()
 
     def BotonesMapa(self):
         boc = tk.Button(self.master, text="Bocas del toro")
@@ -83,9 +79,7 @@ class MainMenu(tk.Frame):
 class LugarMenu(tk.Frame):
     def __init__(self, master):
         self.master = master
-        self.master.title("Aerolinea Arthur Ryan -LugarMenu")
-        logo = tk.PhotoImage(file='../logo_FISC.png')
-        self.master.tk.call('wm', 'iconphoto', self.master._w, logo)
+
         tk.Frame.__init__(self, self.master)
         canvas = tk.Canvas(self, width=1200, height=700)
         canvas.pack()
@@ -100,7 +94,7 @@ class LugarMenu(tk.Frame):
         leyendaLugar.place(relx=0.05, rely=0.8)
 
         #descripcion del lugar
-        descriptionTextBox = tk.Text(self, font={'Arial', 12})
+        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'justify'})
         descriptionTextBox.insert(tk.INSERT, self.master.userOption.getDescription())
         descriptionTextBox.config(state="disabled")
         descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.7, relheight=0.5)
@@ -117,13 +111,13 @@ class LugarMenu(tk.Frame):
         self.zones_subMenu.place(relx=0.5, rely=0.75)
 
         #boton de regreso a Menu Principal
-        backButtom = tk.Button(self, text="Regresar a MenuPrincipal", command=lambda: master.switch_frame(MainMenu))
+        backButtom = tk.Button(self, text="Regresar a MenuPrincipal", command=lambda: self.master.switch_frame(MainMenu))
         backButtom.place(relx=0.0, rely=0.0)
 
     def DetectarColision(self):
         self.master.switch_frame(PageTwo)
 
-
+#clase que maneja las zonas turisticas
 class PageTwo(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)

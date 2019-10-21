@@ -131,7 +131,11 @@ class PageTwo(tk.Frame):
         regresar.place(x=5, y=5)
         #boton de adquirir productos
         adquiri = tk.Button(self, text = "Adquirir Paquete")
-        adquiri.place(x = 400, y= 500)
+        adquiri.place(x = 450, y= 500)
+        #descripción del lugar
+        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'Bold'})
+        descriptionTextBox.config(state="disable")
+        descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
 
 
 #main thread, aqui se ejecuta el programa

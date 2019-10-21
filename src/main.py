@@ -94,9 +94,9 @@ class LugarMenu(tk.Frame):
         leyendaLugar.place(relx=0.05, rely=0.8)
 
         #descripcion del lugar
-        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'Bold'})
+        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'justify'})
         descriptionTextBox.insert(tk.INSERT, self.master.userOption.getDescription())
-        descriptionTextBox.config(state="disable")
+        descriptionTextBox.config(state="disabled")
         descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
 
         #submenu con las zonas del Lugar(cambio a pagina 3)
@@ -112,7 +112,7 @@ class LugarMenu(tk.Frame):
 
         #boton de regreso a Menu Principal
         backButtom = tk.Button(self, text="Regresar a MenuPrincipal", command=lambda: self.master.switch_frame(MainMenu))
-        backButtom.place(x=2, y=2)
+        backButtom.place(relx=0.0, rely=0.0)
 
     def DetectarColision(self):
         self.master.switch_frame(PageTwo)
@@ -131,12 +131,11 @@ class PageTwo(tk.Frame):
         regresar.place(x=5, y=5)
         #boton de adquirir productos
         adquiri = tk.Button(self, text = "Adquirir Paquete")
-        adquiri.place(x = 450, y= 500)
-        #descripción del lugar
-        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'Bold'})
-        descriptionTextBox.config(state="disable")
+        adquiri.place(x = 400, y= 500)
+        #caja de texto
+        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'justify'})
+        descriptionTextBox.config(state="disabled")
         descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
-
 
 #main thread, aqui se ejecuta el programa
 if __name__ == "__main__":

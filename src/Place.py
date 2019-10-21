@@ -24,12 +24,11 @@ class Place():
     def getImageLink(self):
         return self.image
 
+    def getDescription(self):
+        return self.description
+
 
 LosSantos = Place("Los Santos", "../res/LosSantos.txt", "../res/LosSantos-mapa.png")
 Herrera = Place("Herrera", "../res/Herrera.txt", "../res/Herrera-mapa.png")
 Darien = Place("Darien", "../res/Darien.txt", "../res/darien-Mapa.png")
 
-placeList = []
-placeList.append(Darien)
-placeList.append(Herrera)
-placeList.append(LosSantos)

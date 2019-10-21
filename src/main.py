@@ -20,9 +20,9 @@ class SampleApp(tk.Tk):
 
 #Cada subclase representa un subframde del programa
 class MainMenu(tk.Frame):
-    def __init__(self, master):
+    def __init__(self, master): #master representa la clase padre, todos las subclases deben incluirlo
         #setup del frame y recursos
-        self.master = master
+        self.master = master# de esta forma de incluye
         self.master.title("Aerolinea Arthur Ryan -MenuPrincipal")
         logo = tk.PhotoImage(file='../logo_FISC.png')
         self.master.tk.call('wm','iconphoto', self.master._w, logo)
@@ -91,14 +91,37 @@ class LugarMenu(tk.Frame):
         canvas.pack()
 
         # Despues de aqui, pon todos los objectos q quieras y recuerda hacer el llamado para hacer el cambio
-
+        #imagen del Lugar
         lugarImg = tk.PhotoImage(file=self.master.userOption.getImageLink())
         lugarLabel = tk.Label(self, image=lugarImg)
         lugarLabel.image = lugarImg
-        lugarLabel.place(relx=0.05, rely=0.1)
+        lugarLabel.place(relx=0.025, rely=0.05, relwidth=0.45,relheight=0.7)
+        leyendaLugar = tk.Label(self, text="Mapa de " + str(self.master.userOption.Name()), font={'Helvetica', 20, 'bold'})
+        leyendaLugar.place(relx=0.05, rely=0.8)
 
+        #descripcion del lugar
+        descriptionTextBox = tk.Text(self, font={'Arial', 12})
+        descriptionTextBox.insert(tk.INSERT, self.master.userOption.getDescription())
+        descriptionTextBox.config(state="disabled")
+        descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.7, relheight=0.5)
+
+        #submenu con las zonas del Lugar(cambio a pagina 3)
+        self.zones_subMenu = tk.Menubutton(self, text="zonas disponibles", font={'Arial', 16}, relief=tk.RAISED)
+        self.zones_subMenu.menu = tk.Menu(self.zones_subMenu, tearoff=0)
+        self.zones_subMenu["menu"] = self.zones_subMenu.menu
+
+        self.zones_subMenu.menu.add_command(label='zona1', command=lambda: self.DetectarColision())
+        self.zones_subMenu.menu.add_command(label='zona2', command=lambda: self.DetectarColision())
+        self.zones_subMenu.menu.add_command(label='zona3', command=lambda: self.DetectarColision())
+        self.zones_subMenu.menu.add_command(label='zona4', command=lambda: self.DetectarColision())
+        self.zones_subMenu.place(relx=0.5, rely=0.75)
+
+        #boton de regreso a Menu Principal
         backButtom = tk.Button(self, text="Regresar a MenuPrincipal", command=lambda: master.switch_frame(MainMenu))
         backButtom.place(relx=0.0, rely=0.0)
+
+    def DetectarColision(self):
+        self.master.switch_frame(PageTwo)
 
 
 class PageTwo(tk.Frame):
@@ -111,6 +134,7 @@ class PageTwo(tk.Frame):
                   command=lambda: master.switch_frame(MainMenu)).pack()
 
 
+#main thread, aqui se ejecuta el programa
 if __name__ == "__main__":
     app = SampleApp()
     app.mainloop()

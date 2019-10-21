@@ -1,7 +1,6 @@
 import tkinter as tk
 from src.Place import *
 
-
 #Clase base que controla los frames, recursos y switches del programa
 class SampleApp(tk.Tk):
     def __init__(self):
@@ -54,18 +53,18 @@ class MainMenu(tk.Frame):
         self.her.place(x=470, y=350)
         self.ls = tk.Button(self.master, text="Los Santos", command=lambda: self.DetectarColision(LosSantos))
         self.ls.place(x=510, y=450)
-        pnm = tk.Button(self.master, text="Panamá")
-        pnm.place(x=730, y=100)
-        ver = tk.Button(self.master, text="Veraguas")
-        ver.place(x=340, y=300)
-        gy = tk.Button(self.master, text="Guna Yala")
-        gy.place(x=980, y=80)
-        ewn = tk.Button(self.master, text="Emberá\n Wounaan")
-        ewn.place(x=1100, y=250)
-        nb = tk.Button(self.master, text="Ngobe Bugle")
-        nb.place(x=220, y=190)
-        pnmo = tk.Button(self.master, text="Panamá\n Oeste")
-        pnmo.place(x=620, y=160)
+        self.pnm = tk.Button(self.master, text="Panamá", command=lambda: self.DetectarColision(Panama))
+        self.pnm.place(x=750, y=80)
+        self.ver = tk.Button(self.master, text="Veraguas", command=lambda: self.DetectarColision(Veraguas))
+        self.ver.place(x=340, y=300)
+        self.gy = tk.Button(self.master, text="Guna Yala", command=lambda: self.DetectarColision(Guna))
+        self.gy.place(x=950, y=60)
+        self.ewn = tk.Button(self.master, text="Emberá\n Wounaan", command=lambda: self.DetectarColision(Embera))
+        self.ewn.place(x=1100, y=250)
+        self.nb = tk.Button(self.master, text="Ngobe Bugle", command=lambda: self.DetectarColision(Ngobe))
+        self.nb.place(x=220, y=190)
+        self.pnmo = tk.Button(self.master, text="Panamá\n Oeste", command=lambda: self.DetectarColision(PanamaOeste))
+        self.pnmo.place(x=620, y=160)
 
     def DetectarColision(self, lugar):
         self.master.userOption = lugar
@@ -90,14 +89,14 @@ class LugarMenu(tk.Frame):
         lugarLabel = tk.Label(self, image=lugarImg)
         lugarLabel.image = lugarImg
         lugarLabel.place(relx=0.025, rely=0.05, relwidth=0.45,relheight=0.7)
-        leyendaLugar = tk.Label(self, text="Mapa de " + str(self.master.userOption.Name()), font={'Helvetica', 20, 'bold'})
+        leyendaLugar = tk.Label(self, text="Mapa de " + str(self.master.userOption.Name()), font={'Helvetica', 20,'bold'})
         leyendaLugar.place(relx=0.05, rely=0.8)
 
         #descripcion del lugar
-        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'justify'})
+        descriptionTextBox = tk.Text(self, font={'Helvetica', 12, 'justify'})
         descriptionTextBox.insert(tk.INSERT, self.master.userOption.getDescription())
         descriptionTextBox.config(state="disabled")
-        descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.7, relheight=0.5)
+        descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.325)
 
         #submenu con las zonas del Lugar(cambio a pagina 3)
         self.zones_subMenu = tk.Menubutton(self, text="zonas disponibles", font={'Arial', 16}, relief=tk.RAISED)

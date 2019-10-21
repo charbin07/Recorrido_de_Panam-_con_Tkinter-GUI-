@@ -94,10 +94,10 @@ class LugarMenu(tk.Frame):
         leyendaLugar.place(relx=0.05, rely=0.8)
 
         #descripcion del lugar
-        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'justify'})
+        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'Bold'})
         descriptionTextBox.insert(tk.INSERT, self.master.userOption.getDescription())
-        descriptionTextBox.config(state="disabled")
-        descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.7, relheight=0.5)
+        descriptionTextBox.config(state="disable")
+        descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
 
         #submenu con las zonas del Lugar(cambio a pagina 3)
         self.zones_subMenu = tk.Menubutton(self, text="zonas disponibles", font={'Arial', 16}, relief=tk.RAISED)
@@ -112,7 +112,7 @@ class LugarMenu(tk.Frame):
 
         #boton de regreso a Menu Principal
         backButtom = tk.Button(self, text="Regresar a MenuPrincipal", command=lambda: self.master.switch_frame(MainMenu))
-        backButtom.place(relx=0.0, rely=0.0)
+        backButtom.place(x=2, y=2)
 
     def DetectarColision(self):
         self.master.switch_frame(PageTwo)
@@ -121,11 +121,17 @@ class LugarMenu(tk.Frame):
 class PageTwo(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        canvas = tk.Canvas(self, width=100, height=200)
+        canvas = tk.Canvas(self, width=1000, height=600)
         canvas.pack()
-        tk.Label(self, text="This is page two").pack(side="top", fill="x", pady=10)
-        tk.Button(self, text="Return to start page",
-                  command=lambda: master.switch_frame(MainMenu)).pack()
+        #título de la pantalla 2
+        titulo = tk.Label(text='Área turística', font=('Helvetica', '30', 'bold'))
+        titulo.place(x=400, y=0)
+        #boton de regresar a pantalla anterior
+        regresar = tk.Button(self, text="Regresar", command=lambda: master.switch_frame(LugarMenu))
+        regresar.place(x=5, y=5)
+        #boton de adquirir productos
+        adquiri = tk.Button(self, text = "Adquirir Paquete")
+        adquiri.place(x = 400, y= 500)
 
 
 #main thread, aqui se ejecuta el programa

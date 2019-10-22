@@ -136,6 +136,7 @@ class PageTwo(tk.Frame):
         descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'justify'})
         descriptionTextBox.config(state="disabled")
         descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
+        #imagen del lugar
 
 #main thread, aqui se ejecuta el programa
 if __name__ == "__main__":

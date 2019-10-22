@@ -39,13 +39,13 @@ class MainMenu(tk.Frame):
         self.BotonesMapa()
 
     def BotonesMapa(self):
-        boc = tk.Button(self.master, text="Bocas del toro")
+        boc = tk.Button(self.master, text="Bocas del toro", command=lambda: print("agregar colision"))
         boc.place(x=40, y=75)
-        coc = tk.Button(self.master, text="Coclé")
+        coc = tk.Button(self.master, text="Coclé", command=lambda: print("agregar colision"))
         coc.place(x=510, y=230)
-        col = tk.Button(self.master, text="Colón")
+        col = tk.Button(self.master, text="Colón", command=lambda: print("agregar colision"))
         col.place(x=500, y=130)
-        chi = tk.Button(self.master, text="Chiriquí")
+        chi = tk.Button(self.master, text="Chiriquí", command=lambda: print("agregar colision"))
         chi.place(x=80, y=230)
         self.dar = tk.Button(self.master, text="Darién", command=lambda: self.DetectarColision(Darien))
         self.dar.place(x=1000, y=290)
@@ -99,21 +99,24 @@ class LugarMenu(tk.Frame):
         descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.325)
 
         #submenu con las zonas del Lugar(cambio a pagina 3)
-        self.zones_subMenu = tk.Menubutton(self, text="zonas disponibles", font={'Arial', 16}, relief=tk.RAISED)
+        self.zones_subMenu = tk.Menubutton(self, text="zonas turisticas disponibles", font={'Arial', 16}, relief=tk.RAISED)
         self.zones_subMenu.menu = tk.Menu(self.zones_subMenu, tearoff=0)
         self.zones_subMenu["menu"] = self.zones_subMenu.menu
-
-        self.zones_subMenu.menu.add_command(label='zona1', command=lambda: self.DetectarColision())
-        self.zones_subMenu.menu.add_command(label='zona2', command=lambda: self.DetectarColision())
-        self.zones_subMenu.menu.add_command(label='zona3', command=lambda: self.DetectarColision())
-        self.zones_subMenu.menu.add_command(label='zona4', command=lambda: self.DetectarColision())
+        #imprime las 4 Zonas turisticas disponibles en el menu
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(0).Name(), command=lambda: self.DetectarColision(0))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(1).Name(), command=lambda: self.DetectarColision(1))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(2).Name(), command=lambda: self.DetectarColision(2))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(3).Name(), command=lambda: self.DetectarColision(3))
         self.zones_subMenu.place(relx=0.5, rely=0.75)
 
         #boton de regreso a Menu Principal
         backButtom = tk.Button(self, text="Regresar a MenuPrincipal", command=lambda: self.master.switch_frame(MainMenu))
         backButtom.place(relx=0.0, rely=0.0)
 
-    def DetectarColision(self):
+    def DetectarColision(self, userZoneIndex):
+        #guarda la zona q el usuario selecciono y cambia a siguiente pantalla
+        self.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
+        print(self.userZoneSelected.Name())
         self.master.switch_frame(PageTwo)
 
 #clase que maneja las zonas turisticas

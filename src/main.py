@@ -115,6 +115,7 @@ class LugarMenu(tk.Frame):
         backButtom.place(relx=0.0, rely=0.0)
 
     def DetectarColision(self):
+        #self.userZoneSelected = zone
         self.master.switch_frame(PageTwo)
 
 #clase que maneja las zonas turisticas
@@ -123,6 +124,9 @@ class PageTwo(tk.Frame):
         tk.Frame.__init__(self, master)
         canvas = tk.Canvas(self, width=1000, height=600)
         canvas.pack()
+        #self.master = master
+        #zone = self.master.userZoneSelected
+
         #título de la pantalla 2
         titulo = tk.Label(text='Área turística', font=('Helvetica', '30', 'bold'))
         titulo.place(x=400, y=0)

@@ -6,7 +6,7 @@ class Place():
         self.description = self.getFileInfo(src)
         self.image = imgsrc
         self.zones = []
-
+    #leer los .txt y los guarda
     def getFileInfo(self, src):
         try:
             with open(src) as f:
@@ -17,19 +17,19 @@ class Place():
             text = None
             print(f"archivo no encontrado file:{src}")
         return text
-
+    #agrega una zona
     def AddZone(self, place):
         self.zones.append(place)
-
+    #agrega un nombre
     def Name(self):
         return self.name
-
+    #retorna el link de imagen
     def getImageLink(self):
         return self.image
-
+    #retorna la descripcion
     def getDescription(self):
         return self.description
-
+    #retorna la zona escogida a traves de un index 0 a 3
     def getZone(self, index):
         return self.zones[index]
 

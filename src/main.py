@@ -115,12 +115,13 @@ class LugarMenu(tk.Frame):
 
     def DetectarColision(self, userZoneIndex):
         #guarda la zona q el usuario selecciono y cambia a siguiente pantalla
-        self.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
-        print(self.userZoneSelected.Name())
-        self.master.switch_frame(UserMenu)
+        self.master.zone = self.master.userOption.getZone(userZoneIndex)
+        print(self.master.zone.Name())
+        self.master.switch_frame(Pantalla3)
+
 
 #clase que maneja las zonas turisticas
-class UserMenu(tk.Frame):
+class Pantalla3(tk.Frame):
     def __init__(self, master):
         self.master = master
         tk.Frame.__init__(self, self.master)
@@ -128,9 +129,38 @@ class UserMenu(tk.Frame):
         canvas.pack()
 
 
-        tk.Label(self, text="This is page two").pack(side="top", fill="x", pady=10)
-        tk.Button(self, text="Return to start page",
-                  command=lambda: master.switch_frame(MainMenu)).pack()
+        tk.Label(self, text="Adquiera su Paquete", font={}).place(relx=0.5, rely=0.0)
+
+        # descripcion del zona y paquete seleccionado
+        descriptionTextBox = tk.Text(self, font={'Helvetica', 12, 'justify'})
+        descriptionTextBox.insert(tk.INSERT, self.master.zone.getDescription())
+        descriptionTextBox.config(state="disabled")
+        descriptionTextBox.place(relx=0.25, rely=0.1, relwidth=0.5, relheight=0.45)
+
+        #widgets para conseguir datos de usuario
+        x = 0.01
+        y = 0.6
+        userName = self.MakeInputBox("Nombre Apellido", "Guardar", x, y)
+        id = self.MakeInputBox("Cedula", "Guardar", x, y+0.1)
+        country = self.MakeInputBox("Gentilicio", "Guardar", x, y+0.2)
+        phone = self.MakeInputBox("Numero de telefono", "Guardar", x, y+0.3)
+
+
+        # boton de regreso a Menu Principal
+        backButtom = tk.Button(self, text="Regresar a Menu de Zonas", command=lambda: self.master.switch_frame(MainMenu))
+        backButtom.place(relx=0.0, rely=0.0)
+
+    def MakeInputBox(self, labelText, buttomText, x, y):
+        tk.Label(self, text=labelText).place(relx=x, rely=y)
+        entry = tk.Entry(self)
+        entry.place(relx=x+0.1, rely=y)
+        #tk.Button(self, text=buttomText, command=lambda: self.saveValues(entry)).place(relx=x+0.25, rely=y)
+
+    # def saveValues(self, entry):
+    #     pass
+
+    #def MakeCheckBox(self, labelText, x, y):
+
 
 
 #main thread, aqui se ejecuta el programa

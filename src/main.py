@@ -1,7 +1,6 @@
 import tkinter as tk
 from src.Place import *
 
-
 #Clase base que controla los frames, recursos y switches del programa
 class SampleApp(tk.Tk):
     def __init__(self):
@@ -40,32 +39,32 @@ class MainMenu(tk.Frame):
         self.BotonesMapa()
 
     def BotonesMapa(self):
-        boc = tk.Button(self.master, text="Bocas del toro")
-        boc.place(x=40, y=75)
-        coc = tk.Button(self.master, text="Coclé")
-        coc.place(x=510, y=230)
-        col = tk.Button(self.master, text="Colón")
-        col.place(x=500, y=130)
-        chi = tk.Button(self.master, text="Chiriquí")
-        chi.place(x=80, y=230)
+        self.boc = tk.Button(self.master, text="Bocas del toro", command=lambda: self.DetectarColision(Bocas))
+        self.boc.place(x=40, y=75)
+        self.coc = tk.Button(self.master, text="Coclé", command=lambda: self.DetectarColision(Cocle))
+        self.coc.place(x=510, y=230)
+        self.col = tk.Button(self.master, text="Colón", command=lambda: self.DetectarColision(Colon))
+        self.col.place(x=500, y=130)
+        self.chi = tk.Button(self.master, text="Chiriquí", command=lambda: self.DetectarColision(Chiriqui))
+        self.chi.place(x=80, y=230)
         self.dar = tk.Button(self.master, text="Darién", command=lambda: self.DetectarColision(Darien))
         self.dar.place(x=1000, y=290)
         self.her = tk.Button(self.master, text="Herrera", command=lambda: self.DetectarColision(Herrera))
         self.her.place(x=470, y=350)
         self.ls = tk.Button(self.master, text="Los Santos", command=lambda: self.DetectarColision(LosSantos))
         self.ls.place(x=510, y=450)
-        pnm = tk.Button(self.master, text="Panamá")
-        pnm.place(x=730, y=100)
-        ver = tk.Button(self.master, text="Veraguas")
-        ver.place(x=340, y=300)
-        gy = tk.Button(self.master, text="Guna Yala")
-        gy.place(x=980, y=80)
-        ewn = tk.Button(self.master, text="Emberá\n Wounaan")
-        ewn.place(x=1100, y=250)
-        nb = tk.Button(self.master, text="Ngobe Bugle")
-        nb.place(x=220, y=190)
-        pnmo = tk.Button(self.master, text="Panamá\n Oeste")
-        pnmo.place(x=620, y=160)
+        self.pnm = tk.Button(self.master, text="Panamá", command=lambda: self.DetectarColision(Panama))
+        self.pnm.place(x=750, y=80)
+        self.ver = tk.Button(self.master, text="Veraguas", command=lambda: self.DetectarColision(Veraguas))
+        self.ver.place(x=340, y=300)
+        self.gy = tk.Button(self.master, text="Guna Yala", command=lambda: self.DetectarColision(Guna))
+        self.gy.place(x=950, y=60)
+        self.ewn = tk.Button(self.master, text="Emberá\n Wounaan", command=lambda: self.DetectarColision(Embera))
+        self.ewn.place(x=1100, y=250)
+        self.nb = tk.Button(self.master, text="Ngobe Bugle", command=lambda: self.DetectarColision(Ngobe))
+        self.nb.place(x=220, y=190)
+        self.pnmo = tk.Button(self.master, text="Panamá\n Oeste", command=lambda: self.DetectarColision(PanamaOeste))
+        self.pnmo.place(x=620, y=160)
 
     def DetectarColision(self, lugar):
         self.master.userOption = lugar
@@ -84,38 +83,46 @@ class LugarMenu(tk.Frame):
         canvas = tk.Canvas(self, width=1200, height=700)
         canvas.pack()
 
-        # Despues de aqui, pon todos los objectos q quieras y recuerda hacer el llamado para hacer el cambio
         #imagen del Lugar
         lugarImg = tk.PhotoImage(file=self.master.userOption.getImageLink())
         lugarLabel = tk.Label(self, image=lugarImg)
         lugarLabel.image = lugarImg
         lugarLabel.place(relx=0.025, rely=0.05, relwidth=0.45,relheight=0.7)
-        leyendaLugar = tk.Label(self, text="Mapa de " + str(self.master.userOption.Name()), font={'Helvetica', 20, 'bold'})
+        leyendaLugar = tk.Label(self, text="Mapa de " + str(self.master.userOption.Name()), font={'Helvetica', 20,'bold'})
         leyendaLugar.place(relx=0.05, rely=0.8)
 
         #descripcion del lugar
-        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'justify'})
+        descriptionTextBox = tk.Text(self, font={'Helvetica', 12, 'justify'})
         descriptionTextBox.insert(tk.INSERT, self.master.userOption.getDescription())
         descriptionTextBox.config(state="disabled")
+
         descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
 
+        descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.4)
+
+
         #submenu con las zonas del Lugar(cambio a pagina 3)
-        self.zones_subMenu = tk.Menubutton(self, text="zonas disponibles", font={'Arial', 16}, relief=tk.RAISED)
+        self.zones_subMenu = tk.Menubutton(self, text="zonas turisticas disponibles", font={'Arial', 16}, relief=tk.RAISED)
         self.zones_subMenu.menu = tk.Menu(self.zones_subMenu, tearoff=0)
         self.zones_subMenu["menu"] = self.zones_subMenu.menu
-
-        self.zones_subMenu.menu.add_command(label='zona1', command=lambda: self.DetectarColision())
-        self.zones_subMenu.menu.add_command(label='zona2', command=lambda: self.DetectarColision())
-        self.zones_subMenu.menu.add_command(label='zona3', command=lambda: self.DetectarColision())
-        self.zones_subMenu.menu.add_command(label='zona4', command=lambda: self.DetectarColision())
+        #imprime las 4 Zonas turisticas disponibles en el menu
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(0).Name(), command=lambda: self.DetectarColision(0))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(1).Name(), command=lambda: self.DetectarColision(1))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(2).Name(), command=lambda: self.DetectarColision(2))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(3).Name(), command=lambda: self.DetectarColision(3))
         self.zones_subMenu.place(relx=0.5, rely=0.75)
 
         #boton de regreso a Menu Principal
         backButtom = tk.Button(self, text="Regresar a MenuPrincipal", command=lambda: self.master.switch_frame(MainMenu))
         backButtom.place(relx=0.0, rely=0.0)
 
-    def DetectarColision(self):
-        #self.userZoneSelected = zone
+
+
+
+    def DetectarColision(self, userZoneIndex):
+        #guarda la zona q el usuario selecciono y cambia a siguiente pantalla
+        self.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
+        print(self.userZoneSelected.Name())
         self.master.switch_frame(PageTwo)
 
 #clase que maneja las zonas turisticas
@@ -128,7 +135,7 @@ class PageTwo(tk.Frame):
         #zone = self.master.userZoneSelected
 
         #título de la pantalla 2
-        titulo = tk.Label(text='Área turística', font=('Helvetica', '30', 'bold'))
+        titulo = tk.Label(text='Área turística', font=('Helvetica', '25', 'bold'))
         titulo.place(x=400, y=0)
         #boton de regresar a pantalla anterior
         regresar = tk.Button(self, text="Regresar", command=lambda: master.switch_frame(LugarMenu))
@@ -141,6 +148,10 @@ class PageTwo(tk.Frame):
         descriptionTextBox.config(state="disabled")
         descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
         #imagen del lugar
+        lugarImg = tk.PhotoImage(file=self.master.userOption.getImageLink())
+        lugarLabel = tk.Label(self, image=lugarImg)
+        lugarLabel.image = lugarImg
+        lugarLabel.place(relx=0.025, rely=0.085, relwidth=0.45, relheight=0.65)
 
 #main thread, aqui se ejecuta el programa
 if __name__ == "__main__":

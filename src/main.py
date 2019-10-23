@@ -117,14 +117,17 @@ class LugarMenu(tk.Frame):
         #guarda la zona q el usuario selecciono y cambia a siguiente pantalla
         self.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
         print(self.userZoneSelected.Name())
-        self.master.switch_frame(PageTwo)
+        self.master.switch_frame(UserMenu)
 
 #clase que maneja las zonas turisticas
-class PageTwo(tk.Frame):
+class UserMenu(tk.Frame):
     def __init__(self, master):
-        tk.Frame.__init__(self, master)
-        canvas = tk.Canvas(self, width=100, height=200)
+        self.master = master
+        tk.Frame.__init__(self, self.master)
+        canvas = tk.Canvas(self, width=1000, height=700)
         canvas.pack()
+
+
         tk.Label(self, text="This is page two").pack(side="top", fill="x", pady=10)
         tk.Button(self, text="Return to start page",
                   command=lambda: master.switch_frame(MainMenu)).pack()

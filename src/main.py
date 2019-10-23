@@ -118,12 +118,12 @@ class LugarMenu(tk.Frame):
 
 
 
-
     def DetectarColision(self, userZoneIndex):
         #guarda la zona q el usuario selecciono y cambia a siguiente pantalla
-        self.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
-        print(self.userZoneSelected.Name())
+        self.master.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
+        #print(self.master.userZoneSelected.Name())
         self.master.switch_frame(PageTwo)
+
 
 #clase que maneja las zonas turisticas
 class PageTwo(tk.Frame):
@@ -131,8 +131,6 @@ class PageTwo(tk.Frame):
         tk.Frame.__init__(self, master)
         canvas = tk.Canvas(self, width=1000, height=600)
         canvas.pack()
-        #self.master = master
-        #zone = self.master.userZoneSelected
 
         #título de la pantalla 2
         titulo = tk.Label(text='Área turística', font=('Helvetica', '25', 'bold'))
@@ -145,10 +143,11 @@ class PageTwo(tk.Frame):
         adquiri.place(x = 400, y= 500)
         #caja de texto
         descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'justify'})
-        descriptionTextBox.config(state="disabled")
+        descriptionTextBox.insert(tk.INSERT, self.master.userZoneSelected.getDescription())
+        descriptionTextBox.config(state="disable")
         descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
         #imagen del lugar
-        lugarImg = tk.PhotoImage(file=self.master.userOption.getImageLink())
+        lugarImg = tk.PhotoImage(file=self.master.userZoneSelected.getImageLink())
         lugarLabel = tk.Label(self, image=lugarImg)
         lugarLabel.image = lugarImg
         lugarLabel.place(relx=0.025, rely=0.085, relwidth=0.45, relheight=0.65)

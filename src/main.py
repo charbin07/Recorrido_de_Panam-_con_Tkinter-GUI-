@@ -123,7 +123,7 @@ class LugarMenu(tk.Frame):
 
         self.master.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
         #print(self.master.userZoneSelected.Name())
-        self.master.switch_frame(PageTwo)
+        self.master.switch_frame(UserMenu)
 
         self.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
         print(self.userZoneSelected.Name())
@@ -151,14 +151,14 @@ class UserMenu(tk.Frame):
 
 
         #título de la pantalla 2
-        titulo = tk.Label(text='Área turística', font=('Helvetica', '25', 'bold'))
-        titulo.place(x=400, y=0)
+        titulo = tk.Label(text=self.master.userZoneSelected.Name(), font=('Helvetica', '25', 'bold'))
+        titulo.place(x=400, y=3)
         #boton de regresar a pantalla anterior
         regresar = tk.Button(self, text="Regresar", command=lambda: master.switch_frame(LugarMenu))
         regresar.place(x=5, y=5)
         #boton de adquirir productos
         adquiri = tk.Button(self, text = "Adquirir Paquete")
-        adquiri.place(x = 400, y= 500)
+        adquiri.place(x = 400, y= 600)
         #caja de texto
         descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'justify'})
         descriptionTextBox.insert(tk.INSERT, self.master.userZoneSelected.getDescription())

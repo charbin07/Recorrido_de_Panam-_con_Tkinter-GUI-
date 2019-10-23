@@ -6,7 +6,7 @@ class Place():
         self.description = self.getFileInfo(src)
         self.image = imgsrc
         self.zones = []
-    #leer los .txt y los guarda
+
     def getFileInfo(self, src):
         try:
             with open(src) as f:
@@ -17,19 +17,19 @@ class Place():
             text = None
             print(f"archivo no encontrado file:{src}")
         return text
-    #agrega una zona
+
     def AddZone(self, place):
         self.zones.append(place)
-    #agrega un nombre
+
     def Name(self):
         return self.name
-    #retorna el link de imagen
+
     def getImageLink(self):
         return self.image
-    #retorna la descripcion
+
     def getDescription(self):
         return self.description
-    #retorna la zona escogida a traves de un index 0 a 3
+
     def getZone(self, index):
         return self.zones[index]
 
@@ -45,7 +45,6 @@ Colon = Place("Colon", "../res/provincias/Colon/Colon.txt","../res/provincias/Co
 Cocle = Place("Cocle", "../res/provincias/Cocle/cocle.txt","../res/provincias/Cocle/Mapa_de_Cocle.png")
 Chiriqui = Place("Chiriqui", "../res/provincias/Chiriqui/Chiriqui.txt","../res/provincias/Chiriqui/Mapa_de_Chiriqui.png")
 Bocas = Place("Bocas del Toro", "../res/provincias/BocasDelToro/Bocas_del_toro.txt","../res/provincias/BocasDelToro/Bocas_del_Toro.png")
-
 
 #comarcas
 Embera = Place("Embera", "../res/comarcas/Embera/comarca-Embera.txt", "../res/comarcas/Embera/Embera.png")
@@ -99,16 +98,16 @@ LosSantos.AddZone(Place("parque Cerro Hoya", "../res/provincias/LosSantos/zonas/
 LosSantos.AddZone(Place("playa El Arenal", "../res/provincias/LosSantos/zonas/descr/playaArenal.txt", "../res/provincias/LosSantos/zonas/img/playaArenal.png"))
 LosSantos.AddZone(Place("playa Venao", "../res/provincias/LosSantos/zonas/descr/playaVenao.txt", "../res/provincias/LosSantos/zonas/img/playaVenao.png"))
 #zonas de Bocas
-Bocas.AddZone(Place("Bastimento","../res/provincias/BocasDelToro/zonas/descr/Bastimento.txt","../res/provincias/BocasDelToro/zonas/imagenes/isla_bastimento.png"))
-Bocas.AddZone(Place("Isla colon", "../res/provincias/BocasDelToro/zonas/descr/isla_colon.txt","../res/provincias/BocasDelToro/zonas/imagenes/isla_colon_bocas.png"))
+Bocas.AddZone(Place("Bastimento","../res/provincias/BocasDelToro/zonas/descr/Bastimento.txt", "../res/provincias/BocasDelToro/zonas/imagenes/isla_bastimento.png"))
+Bocas.AddZone(Place("Isla colon", "../res/provincias/BocasDelToro/zonas/descr/isla_colon.txt", "../res/provincias/BocasDelToro/zonas/imagenes/isla_colon_bocas.png"))
 Bocas.AddZone(Place("Playa estrella", "../res/provincias/BocasDelToro/zonas/descr/playa_estrella.txt","../res/provincias/BocasDelToro/zonas/imagenes/Playa-Estrellas-4.png"))
 Bocas.AddZone(Place("Isla solarte", "../res/provincias/BocasDelToro/zonas/descr/isla_solarte.txt", "../res/provincias/BocasDelToro/zonas/imagenes/Isla-Solarte.png"))
-#zonas de chiriqui
+# #zonas de chiriqui
 Chiriqui.AddZone(Place("Boquete", "../res/provincias/Chiriqui/zonas/descr/Bajo_Boquete.txt", "../res/provincias/Chiriqui/zonas/img/boquete.png"))
 Chiriqui.AddZone(Place("Cerro punta", "../res/provincias/Chiriqui/zonas/descr/Cerro_Punta.txt", "../res/provincias/Chiriqui/zonas/img/Cerro_Punta.png"))
 Chiriqui.AddZone(Place("David", "../res/provincias/Chiriqui/zonas/descr/David.txt", "../res/provincias/Chiriqui/zonas/img/David.png"))
 Chiriqui.AddZone(Place("Las lajas", "../res/provincias/Chiriqui/zonas/descr/Las_Lajas.txt","../res/provincias/Chiriqui/zonas/img/Las_Lajas.png"))
-#zonas de cocle
+# #zonas de cocle
 Cocle.AddZone(Place("La india dormida", "../res/provincias/Cocle/zonas/descr/india_dormida.txt","../res/provincias/Cocle/zonas/img/La_india_dormida.png"))
 Cocle.AddZone(Place("Museo del caño", "../res/provincias/Cocle/zonas/descr/museo_del_caño.txt","../res/provincias/Cocle/zonas/img/El-Caño.png"))
 Cocle.AddZone(Place("Playa Farallon", "../res/provincias/Cocle/zonas/descr/playa_farallon.txt","../res/provincias/Cocle/zonas/img/Playa_farallon.png"))

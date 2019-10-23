@@ -95,11 +95,8 @@ class LugarMenu(tk.Frame):
         descriptionTextBox = tk.Text(self, font={'Helvetica', 12, 'justify'})
         descriptionTextBox.insert(tk.INSERT, self.master.userOption.getDescription())
         descriptionTextBox.config(state="disabled")
-
         descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
-
         descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.4)
-
 
         #submenu con las zonas del Lugar(cambio a pagina 3)
         self.zones_subMenu = tk.Menubutton(self, text="zonas turisticas disponibles", font={'Arial', 16}, relief=tk.RAISED)
@@ -116,47 +113,54 @@ class LugarMenu(tk.Frame):
         backButtom = tk.Button(self, text="Regresar a MenuPrincipal", command=lambda: self.master.switch_frame(MainMenu))
         backButtom.place(relx=0.0, rely=0.0)
 
-
-
     def DetectarColision(self, userZoneIndex):
         #guarda la zona q el usuario selecciono y cambia a siguiente pantalla
-<<<<<<< HEAD
-
         self.master.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
-        #print(self.master.userZoneSelected.Name())
-        self.master.switch_frame(UserMenu)
-
-        self.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
-        print(self.userZoneSelected.Name())
-        self.master.switch_frame(UserMenu)
-=======
-        self.master.zone = self.master.userOption.getZone(userZoneIndex)
-        print(self.master.zone.Name())
-        self.master.switch_frame(Pantalla3)
-
->>>>>>> dev
-
-
+        print(self.master.userZoneSelected.Name())
+        self.master.switch_frame(ZonaMenu)
 
 #clase que maneja las zonas turisticas
-class Pantalla3(tk.Frame):
+class ZonaMenu(tk.Frame):
     def __init__(self, master):
-
+        self.master = master
         tk.Frame.__init__(self, master)
-        canvas = tk.Canvas(self, width=1000, height=600)
+        canvas = tk.Canvas(self, width=1000, height=700)
         canvas.pack()
 
+        #título de la pantalla 2
+        titulo = tk.Label(text='Área turística', font=('Helvetica', '25', 'bold'))
+        titulo.place(x=400, y=0)
+        #caja de texto
+        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'justify'})
+        descriptionTextBox.insert(tk.INSERT, self.master.userZoneSelected.getDescription())
+        descriptionTextBox.config(state="disable")
+        descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
+        #imagen del lugar
+        lugarImg = tk.PhotoImage(file=self.master.userZoneSelected.getImageLink())
+        lugarLabel = tk.Label(self, image=lugarImg)
+        lugarLabel.image = lugarImg
+        lugarLabel.place(relx=0.025, rely=0.085, relwidth=0.45, relheight=0.65)
+        # boton de adquirir productos
+        adquiri = tk.Button(self, text="Adquirir Paquete", command= lambda: self.master.switch_frame(UserDataMenu))
+        adquiri.place(relx=0.5, rely=0.7)
+
+        # boton de regresar a pantalla anterior
+        regresar = tk.Button(self, text="Regresar", command=lambda: self.master.switch_frame(LugarMenu))
+        regresar.place(x=5, y=5)
+
+
+#clase que maneja los datos del usuario y metodo de pagos
+class UserDataMenu(tk.Frame):
+    def __init__(self, master):
         self.master = master
         tk.Frame.__init__(self, self.master)
         canvas = tk.Canvas(self, width=1000, height=700)
         canvas.pack()
-
-
-        tk.Label(self, text="Adquiera su Paquete", font={}).place(relx=0.5, rely=0.0)
+        tk.Label(self, text="Adquiera su Paquete").place(relx=0.5, rely=0.0)
 
         # descripcion del zona y paquete seleccionado
         descriptionTextBox = tk.Text(self, font={'Helvetica', 12, 'justify'})
-        descriptionTextBox.insert(tk.INSERT, self.master.zone.getDescription())
+        descriptionTextBox.insert(tk.INSERT, self.master.userZoneSelected.getDescription())
         descriptionTextBox.config(state="disabled")
         descriptionTextBox.place(relx=0.25, rely=0.1, relwidth=0.5, relheight=0.45)
 
@@ -168,7 +172,6 @@ class Pantalla3(tk.Frame):
         country = self.MakeInputBox("Gentilicio", "Guardar", x, y+0.2)
         phone = self.MakeInputBox("Numero de telefono", "Guardar", x, y+0.3)
 
-
         # boton de regreso a Menu Principal
         backButtom = tk.Button(self, text="Regresar a Menu de Zonas", command=lambda: self.master.switch_frame(MainMenu))
         backButtom.place(relx=0.0, rely=0.0)
@@ -177,34 +180,6 @@ class Pantalla3(tk.Frame):
         tk.Label(self, text=labelText).place(relx=x, rely=y)
         entry = tk.Entry(self)
         entry.place(relx=x+0.1, rely=y)
-        #tk.Button(self, text=buttomText, command=lambda: self.saveValues(entry)).place(relx=x+0.25, rely=y)
-
-    # def saveValues(self, entry):
-    #     pass
-
-    #def MakeCheckBox(self, labelText, x, y):
-
-
-
-        #título de la pantalla 2
-        titulo = tk.Label(text=self.master.userZoneSelected.Name(), font=('Helvetica', '25', 'bold'))
-        titulo.place(x=400, y=3)
-        #boton de regresar a pantalla anterior
-        regresar = tk.Button(self, text="Regresar", command=lambda: master.switch_frame(LugarMenu))
-        regresar.place(x=5, y=5)
-        #boton de adquirir productos
-        adquiri = tk.Button(self, text = "Adquirir Paquete")
-        adquiri.place(x = 400, y= 600)
-        #caja de texto
-        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'justify'})
-        descriptionTextBox.insert(tk.INSERT, self.master.userZoneSelected.getDescription())
-        descriptionTextBox.config(state="disable")
-        descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
-        #imagen del lugar
-        lugarImg = tk.PhotoImage(file=self.master.userZoneSelected.getImageLink())
-        lugarLabel = tk.Label(self, image=lugarImg)
-        lugarLabel.image = lugarImg
-        lugarLabel.place(relx=0.025, rely=0.085, relwidth=0.45, relheight=0.65)
 
 #main thread, aqui se ejecuta el programa
 if __name__ == "__main__":

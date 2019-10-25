@@ -1,5 +1,6 @@
 import tkinter as tk
 from src.Place import *
+from src.User import *
 
 #Clase base que controla los frames, recursos y switches del programa
 class SampleApp(tk.Tk):
@@ -17,6 +18,7 @@ class SampleApp(tk.Tk):
         #invoca el frame en pantalla
         self._frame = new_frame
         self._frame.pack()
+
 
 #Cada subclase representa un subframde del programa
 class MainMenu(tk.Frame):
@@ -39,34 +41,22 @@ class MainMenu(tk.Frame):
         self.BotonesMapa()
 
     def BotonesMapa(self):
-        self.boc = tk.Button(self.master, text="Bocas del toro", command=lambda: self.DetectarColision(Bocas))
-        self.boc.place(x=40, y=75)
-        self.coc = tk.Button(self.master, text="Coclé", command=lambda: self.DetectarColision(Cocle))
-        self.coc.place(x=510, y=230)
-        self.col = tk.Button(self.master, text="Colón", command=lambda: self.DetectarColision(Colon))
-        self.col.place(x=500, y=130)
-        self.chi = tk.Button(self.master, text="Chiriquí", command=lambda: self.DetectarColision(Chiriqui))
-        self.chi.place(x=80, y=230)
-        self.dar = tk.Button(self.master, text="Darién", command=lambda: self.DetectarColision(Darien))
-        self.dar.place(x=1000, y=290)
-        self.her = tk.Button(self.master, text="Herrera", command=lambda: self.DetectarColision(Herrera))
-        self.her.place(x=470, y=350)
-        self.ls = tk.Button(self.master, text="Los Santos", command=lambda: self.DetectarColision(LosSantos))
-        self.ls.place(x=510, y=450)
-        self.pnm = tk.Button(self.master, text="Panamá", command=lambda: self.DetectarColision(Panama))
-        self.pnm.place(x=750, y=80)
-        self.ver = tk.Button(self.master, text="Veraguas", command=lambda: self.DetectarColision(Veraguas))
-        self.ver.place(x=340, y=300)
-        self.gy = tk.Button(self.master, text="Guna Yala", command=lambda: self.DetectarColision(Guna))
-        self.gy.place(x=950, y=60)
-        self.ewn = tk.Button(self.master, text="Emberá\n Wounaan", command=lambda: self.DetectarColision(Embera))
-        self.ewn.place(x=1100, y=250)
-        self.nb = tk.Button(self.master, text="Ngobe Bugle", command=lambda: self.DetectarColision(Ngobe))
-        self.nb.place(x=220, y=190)
-        self.pnmo = tk.Button(self.master, text="Panamá\n Oeste", command=lambda: self.DetectarColision(PanamaOeste))
-        self.pnmo.place(x=620, y=160)
+        tk.Button(self.master, text="Bocas del toro", command=lambda: self.CapturePlace(Bocas)).place(x=40, y=75)
+        tk.Button(self.master, text="Coclé", command=lambda: self.CapturePlace(Cocle)).place(x=510, y=230)
+        tk.Button(self.master, text="Colón", command=lambda: self.CapturePlace(Colon)).place(x=500, y=130)
+        tk.Button(self.master, text="Chiriquí", command=lambda: self.CapturePlace(Chiriqui)).place(x=80, y=230)
+        tk.Button(self.master, text="Darién", command=lambda: self.CapturePlace(Darien)).place(x=1000, y=290)
+        tk.Button(self.master, text="Herrera", command=lambda: self.CapturePlace(Herrera)).place(x=470, y=350)
+        tk.Button(self.master, text="Los Santos", command=lambda: self.CapturePlace(LosSantos)).place(x=510, y=450)
+        tk.Button(self.master, text="Panamá", command=lambda: self.CapturePlace(Panama)).place(x=750, y=80)
+        tk.Button(self.master, text="Veraguas", command=lambda: self.CapturePlace(Veraguas)).place(x=340, y=300)
+        tk.Button(self.master, text="Guna Yala", command=lambda: self.CapturePlace(Guna)).place(x=950, y=60)
+        tk.Button(self.master, text="Emberá\n Wounaan", command=lambda: self.CapturePlace(Embera)).place(x=1100, y=250)
+        tk.Button(self.master, text="Ngobe Bugle", command=lambda: self.CapturePlace(Ngobe)).place(x=220, y=190)
+        tk.Button(self.master, text="Panamá\n Oeste", command=lambda: self.CapturePlace(PanamaOeste)).place(x=620, y=160)
 
-    def DetectarColision(self, lugar):
+
+    def CapturePlace(self, lugar):
         self.master.userOption = lugar
         print(self.master.userOption.Name())
         self.master.switch_frame(LugarMenu)
@@ -103,17 +93,17 @@ class LugarMenu(tk.Frame):
         self.zones_subMenu.menu = tk.Menu(self.zones_subMenu, tearoff=0)
         self.zones_subMenu["menu"] = self.zones_subMenu.menu
         #imprime las 4 Zonas turisticas disponibles en el menu
-        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(0).Name(), command=lambda: self.DetectarColision(0))
-        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(1).Name(), command=lambda: self.DetectarColision(1))
-        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(2).Name(), command=lambda: self.DetectarColision(2))
-        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(3).Name(), command=lambda: self.DetectarColision(3))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(0).Name(), command=lambda: self.CapturePlace(0))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(1).Name(), command=lambda: self.CapturePlace(1))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(2).Name(), command=lambda: self.CapturePlace(2))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(3).Name(), command=lambda: self.CapturePlace(3))
         self.zones_subMenu.place(relx=0.5, rely=0.75)
 
         #boton de regreso a Menu Principal
         backButtom = tk.Button(self, text="Regresar a MenuPrincipal", command=lambda: self.master.switch_frame(MainMenu))
         backButtom.place(relx=0.0, rely=0.0)
 
-    def DetectarColision(self, userZoneIndex):
+    def CapturePlace(self, userZoneIndex):
         #guarda la zona q el usuario selecciono y cambia a siguiente pantalla
         self.master.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
         print(self.master.userZoneSelected.Name())
@@ -140,10 +130,10 @@ class ZonaMenu(tk.Frame):
         lugarLabel = tk.Label(self, image=lugarImg)
         lugarLabel.image = lugarImg
         lugarLabel.place(relx=0.025, rely=0.085, relwidth=0.45, relheight=0.65)
-        # boton de adquirir productos
-        adquiri = tk.Button(self, text="Adquirir Paquete", command= lambda: self.master.switch_frame(UserDataMenu))
-        adquiri.place(relx=0.5, rely=0.7)
 
+        # boton de adquirirButtomr productos
+        adquirirButtom = tk.Button(self, text="Adquirir Paquete", command= lambda: self.master.switch_frame(UserDataMenu))
+        adquirirButtom.place(relx=0.5, rely=0.7)
         # boton de regresar a pantalla anterior
         regresar = tk.Button(self, text="Regresar", command=lambda: self.master.switch_frame(LugarMenu))
         regresar.place(x=5, y=5)
@@ -159,27 +149,71 @@ class UserDataMenu(tk.Frame):
         tk.Label(self, text="Adquiera su Paquete").place(relx=0.5, rely=0.0)
 
         # descripcion del zona y paquete seleccionado
-        descriptionTextBox = tk.Text(self, font={'Helvetica', 12, 'justify'})
-        descriptionTextBox.insert(tk.INSERT, self.master.userZoneSelected.getDescription())
-        descriptionTextBox.config(state="disabled")
-        descriptionTextBox.place(relx=0.25, rely=0.1, relwidth=0.5, relheight=0.45)
+        self.MakeTextBox(self.master.userZoneSelected.getDescription(), 0.25, 0.1, 0.5, 0.45)
 
         #widgets para conseguir datos de usuario
         x = 0.01
         y = 0.6
-        userName = self.MakeInputBox("Nombre Apellido", "Guardar", x, y)
-        id = self.MakeInputBox("Cedula", "Guardar", x, y+0.1)
-        country = self.MakeInputBox("Gentilicio", "Guardar", x, y+0.2)
-        phone = self.MakeInputBox("Numero de telefono", "Guardar", x, y+0.3)
+        userName   = self.MakeInputBox("Nombre Apellido", x, y)
+        id         = self.MakeInputBox("Cedula", x, y+0.1)
+        country    = self.MakeInputBox("Gentilicio", x, y+0.2)
+        phone      = self.MakeInputBox("Numero de telefono", x, y+0.3)
+        jubilado   = self.MakeCheckBox("Jubilado?", 0.25, y)
+        companions = self.MakeSpinBox("N° de acompañantes", 1, 10, 0.25, y+0.1)
+        sex        = self.MakeRadioButtom("Sexo", "Masculino", "Femenino", 0.25, y+0.2)
+        dataArray  = [userName, id, country, phone, jubilado, companions, sex]
+
+        # boton de captura de dato(ABONO) y cambio a siguiente frame
+        abonarButtom = tk.Button(self, text="ABONAR", command=lambda: self.CaptureUserData(dataArray, 1))
+        abonarButtom.place(relx=0.70, rely=0.80)
+        # boton de captura de dato(RESERVAR) y cambio a siguiente frame
+        reservaButtom = tk.Button(self, text="RESERVAR", command=lambda: self.CaptureUserData(dataArray, 2))
+        reservaButtom.place(relx=0.80, rely=0.80)
 
         # boton de regreso a Menu Principal
         backButtom = tk.Button(self, text="Regresar a Menu de Zonas", command=lambda: self.master.switch_frame(MainMenu))
         backButtom.place(relx=0.0, rely=0.0)
 
-    def MakeInputBox(self, labelText, buttomText, x, y):
+    def MakeInputBox(self, labelText, x, y):
         tk.Label(self, text=labelText).place(relx=x, rely=y)
-        entry = tk.Entry(self)
-        entry.place(relx=x+0.1, rely=y)
+        data = tk.StringVar()
+        tk.Entry(self, textvariable=data).place(relx=x+0.1, rely=y)
+        return data
+
+    def MakeCheckBox(self, labelText, x, y):
+        stateValue = tk.IntVar()
+        tk.Checkbutton(self, text=labelText, variable=stateValue, onvalue=1, offvalue=0).place(relx=x, rely=y)
+        return stateValue
+
+    def MakeRadioButtom(self, tittleText, val1, val2, x, y):
+        tk.Label(self, text=tittleText).place(relx=x, rely=y)
+        data = tk.StringVar()
+        data.set(val1)
+        tk.Radiobutton(self, text=val1, variable=data, value=val1).place(relx=x, rely=y+0.05)
+        tk.Radiobutton(self, text=val2, variable=data, value=val2).place(relx=x+0.25, rely=y+0.05)
+        return data
+
+    def MakeSpinBox(self, labelText, f, t, x, y):
+        tk.Label(self, text=labelText).place(relx=x, rely=y)
+        data = tk.IntVar()
+        tk.Spinbox(self, from_=f, to=t, textvariable=data).place(relx=x+0.1, rely=y)
+        return data
+
+    def MakeTextBox(self, text, x, y, w, h):
+        tb = tk.Text(self, font={'Helvetica', 16})
+        tb.insert(tk.INSERT, text)
+        tb.config(state="disabled")
+        tb.place(relx=x, rely=y, relwidth=w, relheight=h)
+
+    def CaptureUserData(self, userData, formaPago):
+        # self.master.USER = User(name, id, country, phone)
+        for data in userData:
+            print(str(data.get()))
+        if formaPago == 1:
+            print("ABONAR")
+        else:
+            print("RESERVAR")
+
 
 #main thread, aqui se ejecuta el programa
 if __name__ == "__main__":

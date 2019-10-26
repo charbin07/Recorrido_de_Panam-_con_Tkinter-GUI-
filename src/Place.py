@@ -9,10 +9,9 @@ class Place():
 
     def getFileInfo(self, src):
         try:
-            with open(src) as f:
+            with open(src, encoding="utf-8") as f:
                 # for line in f.readlines():
                 text = f.read()
-                #print(f"Archivo Leido file:{src}")
         except FileNotFoundError:
             text = None
             print(f"archivo no encontrado file:{src}")

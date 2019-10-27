@@ -62,7 +62,7 @@ Embera.AddZone(Place("Puerto Indio", "../res/comarcas/Embera/zonas/desc/Puerto_I
 Embera.AddZone(Place("Sambu", "../res/comarcas/Embera/zonas/desc/Sambú.txt", "../res/comarcas/Embera/zonas/img/Sambú.png", 500.0))
 #zonas de Guna Yala
 Guna.AddZone(Place("Isla Chichime", "../res/comarcas/GunaYala/zonas/desc/Isla_Chicheme.txt", "../res/comarcas/GunaYala/zonas/img/Isla_chichime.png", 1200.0))
-Guna.AddZone(Place("Isla Pelicano", "../res/comarcas/GunaYala/zonas/desc/Isla_Pelicano.txt", "../res/comarcas/GunaYala/zonas/img/Isla_pelicano.png", 500.0))
+Guna.AddZone(Place("Isla Pelicano", "../res/comarcas/GunaYala/zonas/desc/Isla_Pelicano.txt", "../res/comarcas/GunaYala/zonas/img/isla-pelicano.png", 500.0))
 Guna.AddZone(Place("Isla Perro Chico", "../res/comarcas/GunaYala/zonas/desc/Isla_Perro_Chico.txt", "../res/comarcas/GunaYala/zonas/img/Isla_Perro_Chico.png", 1200.0))
 Guna.AddZone(Place("San Blas", "../res/comarcas/GunaYala/zonas/desc/San_blas.txt", "../res/comarcas/GunaYala/zonas/img/SanBlas.png", 1300.0))
 #zonas de Ngobe

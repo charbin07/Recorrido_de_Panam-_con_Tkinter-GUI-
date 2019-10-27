@@ -10,3 +10,14 @@ class User():
 
     def Name(self):
         return self.name
+
+    def Companions(self):
+        return self.companions
+
+    def Jubilado(self):
+        return self.jubilado
+
+    def GetData(self):
+        dataString = "DATOS DE USUARIO:\nNombre: " + self.name +"\nid: " + str(self.id) + "\nsexo:" + self.sex +"\npais: " + self.country + "\nphone:" + self.phone +"\nacompanantes: " +str(self.companions)
+        dataString += "\nJubilado: SI" if (self.jubilado==True) else "\nJubilado: NO"
+        return dataString

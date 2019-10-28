@@ -157,7 +157,7 @@ class LugarMenu(tk.Frame):
         canvas.pack()
 
         # título de la pantalla Menu
-        tk.Label(text='Territorio turístico', font=('Helvetica', '25', 'bold')).place(x=400, y=0)
+        tk.Label(text=self.master.userOption.Name(), font=('Helvetica', '25', 'bold')).place(x=500, y=0)
 
         #imagen del Lugar7
         self.master.MakeImage(self.master.userOption.getImageLink(), 0.025, 0.05, 0.45, 0.7)
@@ -197,7 +197,7 @@ class ZonaMenu(tk.Frame):
         canvas.pack()
 
         #título de la pantalla 2
-        tk.Label(text='Área turística', font=('Helvetica', '25', 'bold')).place(x=400, y=0)
+        tk.Label(text=self.master.userZoneSelected.Name(), font=('Helvetica', '25', 'bold')).place(x=400, y=0)
 
         #Descripcion de la zona escogida
         self.master.MakeTextBox(self.master.userZoneSelected.getDescription(), 0.5, 0.10, 0.48, 0.5)

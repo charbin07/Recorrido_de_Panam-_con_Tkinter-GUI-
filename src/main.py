@@ -153,19 +153,18 @@ class LugarMenu(tk.Frame):
         self.master = master
 
         tk.Frame.__init__(self, self.master)
-        canvas = tk.Canvas(self, width=1200, height=700)
+        canvas = tk.Canvas(self, width=1000, height=700)
         canvas.pack()
 
         # título de la pantalla Menu
-        tk.Label(text=self.master.userOption.Name(), font=('Helvetica', '25', 'bold')).place(x=500, y=0)
+        tk.Label(text=self.master.userOption.Name(), font=('Helvetica', '25', 'bold')).place(x=450, y=10)
 
         #imagen del Lugar7
-        self.master.MakeImage(self.master.userOption.getImageLink(), 0.025, 0.05, 0.45, 0.7)
-        leyendaLugar = tk.Label(self, text="Mapa de " + str(self.master.userOption.Name()), font={'Helvetica', 20,'bold'})
-        leyendaLugar.place(relx=0.05, rely=0.8)
+        self.master.MakeImage(self.master.userOption.getImageLink(), 0.025, 0.085, 0.45, 0.65)
+
 
         #descripcion de provincia 0 comarca
-        self.master.MakeTextBox(self.master.userOption.getDescription(), 0.5, 0.10, 0.48, 0.35)
+        self.master.MakeTextBox(self.master.userOption.getDescription(), 0.5, 0.10, 0.48, 0.5   )
 
         #submenu con las zonas del Lugar(cambio a pagina 3)
         self.zones_subMenu = tk.Menubutton(self, text="zonas turisticas disponibles", font={'Arial', 16}, relief=tk.RAISED)
@@ -197,7 +196,7 @@ class ZonaMenu(tk.Frame):
         canvas.pack()
 
         #título de la pantalla 2
-        tk.Label(text=self.master.userZoneSelected.Name(), font=('Helvetica', '25', 'bold')).place(x=400, y=0)
+        tk.Label(text=self.master.userZoneSelected.Name(), font=('Helvetica', '25', 'bold')).place(x=450, y=10)
 
         #Descripcion de la zona escogida
         self.master.MakeTextBox(self.master.userZoneSelected.getDescription(), 0.5, 0.10, 0.48, 0.5)
@@ -226,19 +225,19 @@ class UserDataMenu(tk.Frame):
         #widgets para conseguir datos de usuario
         x = 0.01
         y = 0.6
-        userName   = self.master.MakeInputBox("Nombre Apellido", x, y)
-        id         = self.master.MakeInputBox("Cedula", x, y+0.1)
+        userName   = self.master.MakeInputBox("Nombre Completo ", x, y)
+        id         = self.master.MakeInputBox("Cédula",x, y+0.1)
         country    = self.master.MakeInputBox("Gentilicio", x, y+0.2)
-        phone      = self.master.MakeInputBox("Numero de telefono", x, y+0.3)
-        jubilado   = self.master.MakeCheckBox("Jubilado?", 0.25, y)
-        companions = self.master.MakeSpinBox("N° de acompañantes", 0, 10, 0.25, y+0.1)
-        sex        = self.master.MakeRadioButtom("Sexo", "Masculino", "Femenino", 0.25, y+0.2)
+        phone      = self.master.MakeInputBox("Teléfono", x, y+0.3)
+        jubilado   = self.master.MakeCheckBox("Jubilado?", 0.30, y)
+        companions = self.master.MakeSpinBox("N° de acompañantes", 0, 10, 0.3, y+0.1)
+        sex        = self.master.MakeRadioButtom("Sexo:","Masculino","Femenino", 0.30, y+0.2)
         dataArray  = [userName, id, sex, country, phone, companions, jubilado]
 
         # boton de captura de dato(ABONO) y cambio a siguiente frame
-        tk.Button(self, text="ABONAR", command=lambda: self.CaptureUserData(dataArray, 1)).place(relx=0.70, rely=0.80)
+        tk.Button(self, text="ABONAR",bg = 'grey', command=lambda: self.CaptureUserData(dataArray, 1)).place(relx=0.70, rely=0.80)
         # boton de captura de dato(RESERVAR) y cambio a siguiente frame
-        reservaButtom = tk.Button(self, text="PAGAR", command=lambda: self.CaptureUserData(dataArray, 2))
+        reservaButtom = tk.Button(self, text="PAGAR", bg='grey', command=lambda: self.CaptureUserData(dataArray, 2))
         reservaButtom.place(relx=0.80, rely=0.80)
 
         # boton de regreso a Menu Principal

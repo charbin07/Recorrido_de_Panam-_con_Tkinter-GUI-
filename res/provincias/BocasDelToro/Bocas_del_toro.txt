@@ -1,2 +1,6 @@
-DescripciónBocas del Toro es una provincia de Panamá que abarca una cadena de islas frente a la costa del Caribe, junto con una sección de territorio continental cercano con un bosque tropical biodiverso. En Isla Colón, la isla principal, se encuentra la capital, Pueblo de Bocas, un núcleo central con restaurantes, tiendas y vida nocturna. Las playas populares incluyen Boca del Drago. También en Isla Colón está la playa Estrella, llamada así por las numerosas estrellas de mar de su lecho oceánico.
-Capital: Bocas del Toro
+Descripción:
+Bocas del Toro es una provincia de Panamá que abarca una cadena de islas frente a la costa del Caribe,
+junto con una sección de territorio continental cercano con un bosque tropical biodiverso. En Isla Colón, la isla
+principal, se encuentra la capital, Pueblo de Bocas, un núcleo central con restaurantes, tiendas y vida nocturna. Las
+playas populares incluyen Boca del Drago. También en Isla Colón está la playa Estrella, llamada así por las numerosas
+estrellas de mar de su lecho oceánico. Capital: Bocas del Toro

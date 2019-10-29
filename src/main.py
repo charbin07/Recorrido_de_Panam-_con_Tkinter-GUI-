@@ -1,5 +1,23 @@
 import tkinter as tk
 from src.Place import *
+from src.User import *
+from dataclasses import dataclass
+#struct q almacena informacion acerca de las compras de un usuario
+@dataclass
+class Comprador:
+    userName: str
+    compas: int
+    zone: str
+    payMethod: str
+    totalPrice: float
+
+listaDeCompradores = []
+
+#constantes
+DESCUENTO_JUBILADO        = 10/100.0
+DESCUENTO_PERSONAS        = 15/100.0
+DESCUENTO_COMPRA_SUPERIOR = 5/100.0
+
 
 #Clase base que controla los frames, recursos y switches del programa
 class SampleApp(tk.Tk):
@@ -18,59 +36,114 @@ class SampleApp(tk.Tk):
         self._frame = new_frame
         self._frame.pack()
 
+    #Coleccion de funciones utiles para crear widgets
+    def MakeButtom(self, textField, _x, _y, callbackFunc, *args):
+        tk.Button(self.master, text=textField, command=lambda: callbackFunc(*args)).place(x=_x, y=_y)
+
+    def MakeInputBox(self, labelText, x, y):
+        tk.Label(self, text=labelText).place(relx=x, rely=y)
+        data = tk.StringVar()
+        tk.Entry(self, textvariable=data).place(relx=x + 0.1, rely=y)
+        return data
+
+    def MakeCheckBox(self, labelText, x, y):
+        stateValue = tk.IntVar()
+        tk.Checkbutton(self, text=labelText, variable=stateValue, onvalue=1, offvalue=0).place(relx=x, rely=y)
+        return stateValue
+
+    def MakeRadioButtom(self, tittleText, val1, val2, x, y):
+        tk.Label(self, text=tittleText).place(relx=x, rely=y)
+        data = tk.StringVar()
+        data.set(val1)
+        tk.Radiobutton(self, text=val1, variable=data, value=val1).place(relx=x, rely=y + 0.05)
+        tk.Radiobutton(self, text=val2, variable=data, value=val2).place(relx=x + 0.25, rely=y + 0.05)
+        return data
+
+    def MakeSpinBox(self, labelText, f, t, x, y):
+        tk.Label(self, text=labelText).place(relx=x, rely=y)
+        data = tk.IntVar()
+        tk.Spinbox(self, from_=f, to=t, textvariable=data).place(relx=x + 0.1, rely=y)
+        return data
+
+    def MakeTextBox(self, text, x, y, w, h):
+        tb = tk.Text(self, font={'Helvetica', 16})
+        tb.insert(tk.INSERT, text)
+        tb.config(state="disabled")
+        tb.place(relx=x, rely=y, relwidth=w, relheight=h)
+
+    def MakeImage(self, imgsrc, x, y, w, h):
+        img = tk.PhotoImage(file=imgsrc)
+        imgObj = tk.Label(self, image=img)
+        imgObj.image = img
+        imgObj.place(relx=x, rely=y, relwidth=w, relheight=h)
+
+
 #Cada subclase representa un subframde del programa
 class MainMenu(tk.Frame):
     def __init__(self, master): #master representa la clase padre, todos las subclases deben incluirlo
         #setup del frame y recursos
-        self.master = master# de esta forma de incluye
-        self.master.title("Aerolinea Arthur Ryan- Proyecto1 Algoritmos")
+        self.master = master
+        tk.Frame.__init__(self, self.master)
+        #definir logo y titulo de la app
+        self.master.title("kalidosoTours- Proyecto1 Algoritmos")
         logo = tk.PhotoImage(file='../logo_FISC.png')
         self.master.tk.call('wm','iconphoto', self.master._w, logo)
 
-        tk.Frame.__init__(self, self.master)
+        #Despues de aqui, pon todos los objectos q quieras y recuerda hacer el llamado para hacer el cambio
         self.canvas = tk.Canvas(self, width=1200, height=500, bg='black')
         self.canvas.pack()
+
         #dibujar bg
-        bgMap = tk.PhotoImage(file="../Mapa_de_Panama_1.png")  # archivo fuente de la imagen del background
+        self.DibujarBg("../Mapa_de_Panama_1.png")
+
+        #accede a lista de compradores
+        self.master.MakeButtom("Carrito", 1100, 5, self.PrintLista)
+
+        #hacer transicion a siguiente frame
+        self.BotonesMapa()
+
+    def DibujarBg(self, src):
+        bgMap = tk.PhotoImage(file=src)  # archivo fuente de la imagen del background
         bgImage = tk.Label(self, image=bgMap)
         bgImage.image = bgMap
         bgImage.place(x=0, y=0)
-        #Despues de aqui, pon todos los objectos q quieras y recuerda hacer el llamado para hacer el cambio
-        self.BotonesMapa()
 
     def BotonesMapa(self):
-        self.boc = tk.Button(self.master, text="Bocas del toro", command=lambda: self.DetectarColision(Bocas))
-        self.boc.place(x=40, y=75)
-        self.coc = tk.Button(self.master, text="Coclé", command=lambda: self.DetectarColision(Cocle))
-        self.coc.place(x=510, y=230)
-        self.col = tk.Button(self.master, text="Colón", command=lambda: self.DetectarColision(Colon))
-        self.col.place(x=500, y=130)
-        self.chi = tk.Button(self.master, text="Chiriquí", command=lambda: self.DetectarColision(Chiriqui))
-        self.chi.place(x=80, y=230)
-        self.dar = tk.Button(self.master, text="Darién", command=lambda: self.DetectarColision(Darien))
-        self.dar.place(x=1000, y=290)
-        self.her = tk.Button(self.master, text="Herrera", command=lambda: self.DetectarColision(Herrera))
-        self.her.place(x=470, y=350)
-        self.ls = tk.Button(self.master, text="Los Santos", command=lambda: self.DetectarColision(LosSantos))
-        self.ls.place(x=510, y=450)
-        self.pnm = tk.Button(self.master, text="Panamá", command=lambda: self.DetectarColision(Panama))
-        self.pnm.place(x=750, y=80)
-        self.ver = tk.Button(self.master, text="Veraguas", command=lambda: self.DetectarColision(Veraguas))
-        self.ver.place(x=340, y=300)
-        self.gy = tk.Button(self.master, text="Guna Yala", command=lambda: self.DetectarColision(Guna))
-        self.gy.place(x=950, y=60)
-        self.ewn = tk.Button(self.master, text="Emberá\n Wounaan", command=lambda: self.DetectarColision(Embera))
-        self.ewn.place(x=1100, y=250)
-        self.nb = tk.Button(self.master, text="Ngobe Bugle", command=lambda: self.DetectarColision(Ngobe))
-        self.nb.place(x=220, y=190)
-        self.pnmo = tk.Button(self.master, text="Panamá\n Oeste", command=lambda: self.DetectarColision(PanamaOeste))
-        self.pnmo.place(x=620, y=160)
+        tk.Button(self.master, text="Bocas del toro", command=lambda: self.CapturePlace(Bocas)).place(x=40, y=75)
+        tk.Button(self.master, text="Coclé", command=lambda: self.CapturePlace(Cocle)).place(x=510, y=230)
+        tk.Button(self.master, text="Colón", command=lambda: self.CapturePlace(Colon)).place(x=500, y=130)
+        tk.Button(self.master, text="Chiriquí", command=lambda: self.CapturePlace(Chiriqui)).place(x=80, y=230)
+        tk.Button(self.master, text="Darién", command=lambda: self.CapturePlace(Darien)).place(x=1000, y=290)
+        tk.Button(self.master, text="Herrera", command=lambda: self.CapturePlace(Herrera)).place(x=470, y=350)
+        tk.Button(self.master, text="Los Santos", command=lambda: self.CapturePlace(LosSantos)).place(x=510, y=450)
+        tk.Button(self.master, text="Panamá", command=lambda: self.CapturePlace(Panama)).place(x=750, y=80)
+        tk.Button(self.master, text="Veraguas", command=lambda: self.CapturePlace(Veraguas)).place(x=340, y=300)
+        tk.Button(self.master, text="Guna Yala", command=lambda: self.CapturePlace(Guna)).place(x=950, y=60)
+        tk.Button(self.master, text="Emberá\n Wounaan", command=lambda: self.CapturePlace(Embera)).place(x=1100, y=250)
+        tk.Button(self.master, text="Ngobe Bugle", command=lambda: self.CapturePlace(Ngobe)).place(x=220, y=190)
+        tk.Button(self.master, text="Panamá\n Oeste", command=lambda: self.CapturePlace(PanamaOeste)).place(x=620, y=160)
 
-    def DetectarColision(self, lugar):
+    def PrintLista(self):
+        top = tk.Toplevel(width=700, height=200, bg='gray', bd=1)
+        x = 10
+        tk.Label(top, text="USUARIO\t\tCOMPAÑIA\tZONA\t\tFORMA DE PAGO\t\tTOTAL", font=('Helvetica', '10', 'bold')).place(x=x, y=25)
+        y = 25
+        if listaDeCompradores != 0:
+            for comprador in listaDeCompradores:
+                y += 30
+                tk.Label(top, fg='green', text=comprador.userName +"\t\t\t" +
+                                   str(comprador.compas) +"\t\t"+
+                                   comprador.zone + "\t\t" +
+                                   comprador.payMethod +"\t\t" +
+                                   str(comprador.totalPrice),
+                         font=('Helvetica', '10', 'bold')).place(x=x, y=y)
+        top.mainloop()
+
+
+    def CapturePlace(self, lugar):
         self.master.userOption = lugar
         print(self.master.userOption.Name())
         self.master.switch_frame(LugarMenu)
-
 
 
 
@@ -83,74 +156,158 @@ class LugarMenu(tk.Frame):
         canvas = tk.Canvas(self, width=1200, height=700)
         canvas.pack()
 
-        #imagen del Lugar
-        lugarImg = tk.PhotoImage(file=self.master.userOption.getImageLink())
-        lugarLabel = tk.Label(self, image=lugarImg)
-        lugarLabel.image = lugarImg
-        lugarLabel.place(relx=0.025, rely=0.05, relwidth=0.45,relheight=0.7)
+        # título de la pantalla Menu
+        tk.Label(text=self.master.userOption.Name(), font=('Helvetica', '25', 'bold')).place(x=500, y=0)
+
+        #imagen del Lugar7
+        self.master.MakeImage(self.master.userOption.getImageLink(), 0.025, 0.05, 0.45, 0.7)
         leyendaLugar = tk.Label(self, text="Mapa de " + str(self.master.userOption.Name()), font={'Helvetica', 20,'bold'})
         leyendaLugar.place(relx=0.05, rely=0.8)
 
-        #descripcion del lugar
-        descriptionTextBox = tk.Text(self, font={'Helvetica', 12, 'justify'})
-        descriptionTextBox.insert(tk.INSERT, self.master.userOption.getDescription())
-        descriptionTextBox.config(state="disabled")
-
-        descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
-
-        descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.4)
-
+        #descripcion de provincia 0 comarca
+        self.master.MakeTextBox(self.master.userOption.getDescription(), 0.5, 0.10, 0.48, 0.35)
 
         #submenu con las zonas del Lugar(cambio a pagina 3)
         self.zones_subMenu = tk.Menubutton(self, text="zonas turisticas disponibles", font={'Arial', 16}, relief=tk.RAISED)
         self.zones_subMenu.menu = tk.Menu(self.zones_subMenu, tearoff=0)
         self.zones_subMenu["menu"] = self.zones_subMenu.menu
         #imprime las 4 Zonas turisticas disponibles en el menu
-        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(0).Name(), command=lambda: self.DetectarColision(0))
-        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(1).Name(), command=lambda: self.DetectarColision(1))
-        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(2).Name(), command=lambda: self.DetectarColision(2))
-        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(3).Name(), command=lambda: self.DetectarColision(3))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(0).Name(), command=lambda: self.CapturePlace(0))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(1).Name(), command=lambda: self.CapturePlace(1))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(2).Name(), command=lambda: self.CapturePlace(2))
+        self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(3).Name(), command=lambda: self.CapturePlace(3))
         self.zones_subMenu.place(relx=0.5, rely=0.75)
 
         #boton de regreso a Menu Principal
         backButtom = tk.Button(self, text="Regresar a MenuPrincipal", command=lambda: self.master.switch_frame(MainMenu))
         backButtom.place(relx=0.0, rely=0.0)
 
-
-
-    def DetectarColision(self, userZoneIndex):
+    def CapturePlace(self, userZoneIndex):
         #guarda la zona q el usuario selecciono y cambia a siguiente pantalla
         self.master.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
-        #print(self.master.userZoneSelected.Name())
-        self.master.switch_frame(PageTwo)
-
+        print(self.master.userZoneSelected.Name())
+        self.master.switch_frame(ZonaMenu)
 
 #clase que maneja las zonas turisticas
-class PageTwo(tk.Frame):
+class ZonaMenu(tk.Frame):
     def __init__(self, master):
+        self.master = master
         tk.Frame.__init__(self, master)
-        canvas = tk.Canvas(self, width=1000, height=600)
+        canvas = tk.Canvas(self, width=1000, height=700)
         canvas.pack()
 
         #título de la pantalla 2
-        titulo = tk.Label(text='Área turística', font=('Helvetica', '25', 'bold'))
-        titulo.place(x=400, y=0)
-        #boton de regresar a pantalla anterior
-        regresar = tk.Button(self, text="Regresar", command=lambda: master.switch_frame(LugarMenu))
-        regresar.place(x=5, y=5)
-        #boton de adquirir productos
-        adquiri = tk.Button(self, text = "Adquirir Paquete")
-        adquiri.place(x = 400, y= 500)
-        #caja de texto
-        descriptionTextBox = tk.Text(self, font={'Helvetica', 14, 'justify'})
-        descriptionTextBox.insert(tk.INSERT, self.master.userZoneSelected.getDescription())
-        descriptionTextBox.config(state="disable")
-        descriptionTextBox.place(relx=0.5, rely=0.10, relwidth=0.48, relheight=0.5)
-        #imagen del lugar
-        lugarImg = tk.PhotoImage(file=self.master.userZoneSelected.getImageLink())
-        lugarLabel = tk.Label(self, image=lugarImg)
-        lugarLabel.image = lugarImg
-        lugarLabel.place(relx=0.025, rely=0.085, relwidth=0.45, relheight=0.65)
+        tk.Label(text=self.master.userZoneSelected.Name(), font=('Helvetica', '25', 'bold')).place(x=400, y=0)
+
+        #Descripcion de la zona escogida
+        self.master.MakeTextBox(self.master.userZoneSelected.getDescription(), 0.5, 0.10, 0.48, 0.5)
+        #imagen de la zona seleccionada
+        self.master.MakeImage(self.master.userZoneSelected.getImageLink(), 0.025, 0.085, 0.45, 0.65)
+
+        # boton de adquirirButtomr productos
+        adquirirButtom = tk.Button(self, text="Adquirir Paquete", command=lambda: self.master.switch_frame(UserDataMenu))
+        adquirirButtom.place(relx=0.5, rely=0.7)
+        # boton de regresar a pantalla anterior
+        tk.Button(self, text="Regresar", command=lambda: self.master.switch_frame(LugarMenu)).place(x=5, y=5)
+
+
+#clase que maneja los datos del usuario y metodo de pagos
+class UserDataMenu(tk.Frame):
+    def __init__(self, master):
+        self.master = master
+        tk.Frame.__init__(self, self.master)
+        canvas = tk.Canvas(self, width=1000, height=700)
+        canvas.pack()
+        tk.Label(self, text="Adquiera su Paquete", font=('Helvetica', '25', 'bold')).place(x=400, y=0)
+
+        # descripcion de zona y precio de paquete seleccionado
+        self.master.MakeTextBox(self.master.userZoneSelected.getDescription() + "Precio x Persona:$" + str(self.master.userZoneSelected.getPrice()), 0.15, 0.1, 0.75, 0.45)
+
+        #widgets para conseguir datos de usuario
+        x = 0.01
+        y = 0.6
+        userName   = self.master.MakeInputBox("Nombre Apellido", x, y)
+        id         = self.master.MakeInputBox("Cedula", x, y+0.1)
+        country    = self.master.MakeInputBox("Gentilicio", x, y+0.2)
+        phone      = self.master.MakeInputBox("Numero de telefono", x, y+0.3)
+        jubilado   = self.master.MakeCheckBox("Jubilado?", 0.25, y)
+        companions = self.master.MakeSpinBox("N° de acompañantes", 0, 10, 0.25, y+0.1)
+        sex        = self.master.MakeRadioButtom("Sexo", "Masculino", "Femenino", 0.25, y+0.2)
+        dataArray  = [userName, id, sex, country, phone, companions, jubilado]
+
+        # boton de captura de dato(ABONO) y cambio a siguiente frame
+        tk.Button(self, text="ABONAR", command=lambda: self.CaptureUserData(dataArray, 1)).place(relx=0.70, rely=0.80)
+        # boton de captura de dato(RESERVAR) y cambio a siguiente frame
+        reservaButtom = tk.Button(self, text="PAGAR", command=lambda: self.CaptureUserData(dataArray, 2))
+        reservaButtom.place(relx=0.80, rely=0.80)
+
+        # boton de regreso a Menu Principal
+        backButtom = tk.Button(self, text="Regresar a Menu de Zonas", command=lambda: self.master.switch_frame(ZonaMenu))
+        backButtom.place(relx=0.0, rely=0.0)
+
+    def CaptureUserData(self, userData, formaPago):
+        #obj que almacena todos los datos del usuario
+        self.master.USER = User(userData[0].get(), userData[1].get(), userData[2].get(), userData[3].get(), userData[4].get(), userData[5].get(), userData[6].get())
+        if formaPago == 1:
+            self.master.switch_frame(FacturaFrame)
+        else:
+            self.master.switch_frame(FacturaFrame)
+
+
+class FacturaFrame(tk.Frame):
+    def __init__(self, master):
+        self.master = master#permite recuperar datos de otras clases
+        tk.Frame.__init__(self, master)
+        canvas = tk.Canvas(self, width=1000, height=800)
+        canvas.pack()
+        #titulo
+        tk.Label(self, text="Factura Final", font=('Helvetica', '25', 'bold')).place(x=400, y=0)
+        #obtiene el subtotal a partir del precio x cabeza
+        SUBTOTAL = self.master.userZoneSelected.getPrice() * (self.master.USER.Companions() + 1) if (self.master.USER.Companions() > 0) else self.master.userZoneSelected.getPrice()
+        #calcula el total final de la factura factura final
+        self.TOTALFINAL = self.CalcularPrecioFinal(SUBTOTAL)
+        #Imprime la factura en pantalla
+        self.master.MakeTextBox(
+            "Empresa: Kalidoso Tours\n" +
+            "Ubicacion:" + self.master.userOption.Name() + ", " + self.master.userZoneSelected.Name() +
+            "\nDescripcion de Zona: " + self.master.userZoneSelected.getDescription() + "\n" +
+            self.master.USER.GetData() +
+            "\nSUBTOTAL: $" + str(SUBTOTAL) +
+            "\nDescuento Jubilado(10%): $" + str(self.descuentoJubilado) + "\tDescuento x personas(15%): $" + str(self.decuentoCompanions) + "\tDescuento x precio(5%): $"
+            + str(self.descuentoPrecio) +
+            "\nTOTAL: $" + str(self.TOTALFINAL),
+            0.05, 0.1, 0.9, 0.50)
+        # boton de regreso a Menu Principal
+        tk.Label(self, text="Felicidades por su compra, Le Esperamos!!!", font=('Helvetica', '15', 'bold'), fg='green').place(relx=0.25, rely=0.80)
+        tk.Button(self, text="Ir a Menu Principal",
+                               command=lambda: self.CaptureTransaction()).place(relx=0.45, rely=0.85)
+
+    def CalcularPrecioFinal(self, subTotal):
+        #variables para almacenar los futuros descuentos
+        self.descuentoJubilado = 0.0
+        self.decuentoCompanions = 0.0
+        self.descuentoPrecio = 0.0
+        #Verificamos y calculamos si se pueden aplicar descuentos
+        if (self.master.USER.jubilado):
+            self.descuentoJubilado = subTotal * DESCUENTO_JUBILADO
+
+        if (self.master.USER.Companions() >= 3):
+            self.decuentoCompanions = subTotal * DESCUENTO_PERSONAS
+
+        if (self.master.userZoneSelected.getPrice() > 2000.0):
+            self.descuentoPrecio = subTotal * DESCUENTO_COMPRA_SUPERIOR
+        #retoramos el precio Final
+        return subTotal - (self.descuentoJubilado + self.decuentoCompanions + self.descuentoPrecio)
+
+    #al activarse capturamos al usuario y volvemos al menu
+    def CaptureTransaction(self):
+        listaDeCompradores.append(Comprador(self.master.USER.Name(), self.master.USER.Companions(), self.master.userZoneSelected.Name(), "PAGO", self.TOTALFINAL))
+        self.master.switch_frame(MainMenu)
+
+
+
+
+
 
 #main thread, aqui se ejecuta el programa
 if __name__ == "__main__":

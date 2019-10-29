@@ -109,16 +109,16 @@ class MainMenu(tk.Frame):
         bgImage.place(x=0, y=0)
 
     def BotonesMapa(self):
-        tk.Button(self.master, text="Bocas del toro", command=lambda: self.CapturePlace(Bocas)).place(x=40, y=75)
+        tk.Button(self.master, text="Bocas del toro", command=lambda: self.CapturePlace(Bocas)).place(x=30, y=75)
         tk.Button(self.master, text="Coclé", command=lambda: self.CapturePlace(Cocle)).place(x=510, y=230)
         tk.Button(self.master, text="Colón", command=lambda: self.CapturePlace(Colon)).place(x=500, y=130)
-        tk.Button(self.master, text="Chiriquí", command=lambda: self.CapturePlace(Chiriqui)).place(x=80, y=230)
+        tk.Button(self.master, text="Chiriquí", command=lambda: self.CapturePlace(Chiriqui)).place(x=75, y=210)
         tk.Button(self.master, text="Darién", command=lambda: self.CapturePlace(Darien)).place(x=1000, y=290)
-        tk.Button(self.master, text="Herrera", command=lambda: self.CapturePlace(Herrera)).place(x=470, y=350)
-        tk.Button(self.master, text="Los Santos", command=lambda: self.CapturePlace(LosSantos)).place(x=510, y=450)
+        tk.Button(self.master, text="Herrera", command=lambda: self.CapturePlace(Herrera)).place(x=460, y=350)
+        tk.Button(self.master, text="Los Santos", command=lambda: self.CapturePlace(LosSantos)).place(x=510, y=420)
         tk.Button(self.master, text="Panamá", command=lambda: self.CapturePlace(Panama)).place(x=750, y=80)
         tk.Button(self.master, text="Veraguas", command=lambda: self.CapturePlace(Veraguas)).place(x=340, y=300)
-        tk.Button(self.master, text="Guna Yala", command=lambda: self.CapturePlace(Guna)).place(x=950, y=60)
+        tk.Button(self.master, text="Guna Yala", command=lambda: self.CapturePlace(Guna)).place(x=980, y=60)
         tk.Button(self.master, text="Emberá\n Wounaan", command=lambda: self.CapturePlace(Embera)).place(x=1100, y=250)
         tk.Button(self.master, text="Ngobe Bugle", command=lambda: self.CapturePlace(Ngobe)).place(x=220, y=190)
         tk.Button(self.master, text="Panamá\n Oeste", command=lambda: self.CapturePlace(PanamaOeste)).place(x=620, y=160)
@@ -175,7 +175,7 @@ class LugarMenu(tk.Frame):
         self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(1).Name(), command=lambda: self.CapturePlace(1))
         self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(2).Name(), command=lambda: self.CapturePlace(2))
         self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(3).Name(), command=lambda: self.CapturePlace(3))
-        self.zones_subMenu.place(relx=0.5, rely=0.75)
+        self.zones_subMenu.place(relx=0.6, rely=0.65)
 
         #boton de regreso a Menu Principal
         backButtom = tk.Button(self, text="Regresar a MenuPrincipal", command=lambda: self.master.switch_frame(MainMenu))

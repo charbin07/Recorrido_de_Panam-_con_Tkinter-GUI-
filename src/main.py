@@ -160,11 +160,11 @@ class LugarMenu(tk.Frame):
         tk.Label(text=self.master.userOption.Name(), font=('Helvetica', '25', 'bold')).place(x=450, y=10)
 
         #imagen del Lugar7
-        self.master.MakeImage(self.master.userOption.getImageLink(), 0.025, 0.085, 0.45, 0.65)
+        self.master.MakeImage(self.master.userOption.getImageLink(), 0.025, 0.1, 0.45, 0.5)
 
 
         #descripcion de provincia 0 comarca
-        self.master.MakeTextBox(self.master.userOption.getDescription(), 0.5, 0.10, 0.48, 0.5   )
+        self.master.MakeTextBox(self.master.userOption.getDescription(), 0.5, 0.10, 0.48, 0.5 )
 
         #submenu con las zonas del Lugar(cambio a pagina 3)
         self.zones_subMenu = tk.Menubutton(self, text="zonas turisticas disponibles", font={'Arial', 16}, relief=tk.RAISED)

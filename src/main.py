@@ -253,7 +253,6 @@ class UserDataMenu(tk.Frame):
         else:
             self.master.switch_frame(FacturaFrame)
 
-
 class FacturaFrame(tk.Frame):
     def __init__(self, master):
         self.master = master#permite recuperar datos de otras clases

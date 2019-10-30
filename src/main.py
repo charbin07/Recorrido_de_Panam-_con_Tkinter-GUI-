@@ -27,7 +27,7 @@ class SampleApp(tk.Tk):
         #setea tkinter
         tk.Tk.__init__(self)
         self._frame = None
-        self.switch_frame(MainMenu) #frame por defecto
+        self.switch_frame(PresentationFrame) #frame por defecto
 
     def switch_frame(self, frame_class):
         #Destruye el frame actual y lo reemplaza con uno nuevo
@@ -80,6 +80,24 @@ class SampleApp(tk.Tk):
         imgObj.place(relx=x, rely=y, relwidth=w, relheight=h)
 
 #Cada subclase q herede de tk.Frame representa un frame de del programa
+class PresentationFrame(tk.Frame):
+    def __init__(self, master):
+        self.master = master
+        tk.Frame.__init__(self, self.master)
+        self.master.title("Kalidoso Tours- Proyecto1 Algoritmos")
+        logo = tk.PhotoImage(file='../logo_FISC.png')
+        self.master.tk.call('wm', 'iconphoto', self.master._w, logo)
+
+        self.canvas = tk.Canvas(self, width=1000, height=500)
+        self.canvas.pack()
+        #informacion referente a presentacion
+        y = 5
+        tk.Label(self, text="Universidad Tecnológica de Panamá\n\nProyecto#1: Algoritmo como estrategia para la solución de problemas\n\nFacilitador: Ing. Samuel Jiménez\n\nIntegrantes:\n\nXavier Lamela 8-956-720\nClyde Harbin 8-927-1305\nLuis Chávez 8-947-1001\nCarlos Bernal 8-896-2198\n\nSemetre 2, 2019\n\nFecha: 30 de octubre de 2019", font=('Helvetica', '10', 'bold')).place(x=290, y=100)
+
+        self.master.MakeImage('../logo_FISC.png', 0, 0, 0.25, 0.25)
+        # boton para cerrar el programa
+        tk.Button(self, text="Continuar", command=lambda: self.master.switch_frame(MainMenu)).place(relx=0.48, rely=0.85)
+
 
 #Esta es el frame  de entrada del programa
 class MainMenu(tk.Frame):
@@ -88,7 +106,7 @@ class MainMenu(tk.Frame):
         self.master = master
         tk.Frame.__init__(self, self.master)
         #definir logo y titulo de la app
-        self.master.title("kalidosoTours- Proyecto1 Algoritmos")
+        self.master.title("Kalidoso Tours- Proyecto1 Algoritmos")
         logo = tk.PhotoImage(file='../logo_FISC.png')
         self.master.tk.call('wm','iconphoto', self.master._w, logo)
 
@@ -104,6 +122,9 @@ class MainMenu(tk.Frame):
 
         #hacer transicion a siguiente frame
         self.BotonesMapa()
+
+        #boton para cerrar el programa
+        tk.Button(self, text="Quit", command=self.CloseApp).place(relx=0.96, rely=0.01)
 
     def DibujarBg(self, src):
         bgMap = tk.PhotoImage(file=src)  # archivo fuente de la imagen del background
@@ -142,11 +163,13 @@ class MainMenu(tk.Frame):
                          font=('Helvetica', '10', 'bold')).place(x=x, y=y)
         top.mainloop()
 
-
     def CapturePlace(self, lugar):
         self.master.userOption = lugar
         print(self.master.userOption.Name())
         self.master.switch_frame(LugarMenu)
+
+    def CloseApp(self):
+        self.master.quit()
 
 
 #Esta frame se activa al seleccionar un Lugar del mapa
@@ -309,11 +332,19 @@ class FacturaAbonoFrame(tk.Frame):
         # crea una ventana emergente con el mensaje fina; y muestra la cantidad adeudada
         top = tk.Toplevel(width=700, height=200, bg='gray', bd=1)
         x = 10
-        tk.Label(top, text="Usted a abonado " + str(amount.get()) + ", Cancele su deuda para gozar de beneficios",
-                 font=('Helvetica', '10', 'bold')).place(x=x, y=25)
-        listaDeCompradores.append(
-            Comprador(self.master.USER.Name(), self.master.USER.Companions(), self.master.userZoneSelected.Name(),
-                      "ABONO", self.TOTALFINAL - float(amount.get())))
+        # si el abono es mayor entonces, No tiene deuda
+        if float(amount.get()) >= self.TOTALFINAL:
+            listaDeCompradores.append(
+                Comprador(self.master.USER.Name(), self.master.USER.Companions(), self.master.userZoneSelected.Name(),
+                          "ABONO", 0))
+            tk.Label(top, text="Usted a abonado " + str(amount.get()) + ", Su deuda ha sido cancelada, puede gozar de los beneficios!",
+                     font=('Helvetica', '10', 'bold')).place(x=x, y=25)
+        else:
+            listaDeCompradores.append(
+                Comprador(self.master.USER.Name(), self.master.USER.Companions(), self.master.userZoneSelected.Name(),
+                            "ABONO", self.TOTALFINAL - float(amount.get())))
+            tk.Label(top, text="Usted a abonado " + str(amount.get()) + ", Cancele su deuda para gozar de beneficios",
+                     font=('Helvetica', '10', 'bold')).place(x=x, y=25)
         self.master.switch_frame(MainMenu)
         top.mainloop()
 
@@ -340,7 +371,7 @@ class FacturaPagoFrame(tk.Frame):
             "\nDescuento Jubilado(10%): $" + str(self.descuentoJubilado) + "\tDescuento x personas(15%): $" + str(self.decuentoCompanions) + "\tDescuento x precio(5%): $"
             + str(self.descuentoPrecio) +
             "\nTOTAL: $" + str(self.TOTALFINAL),
-            0.05, 0.1, 0.9, 0.50)
+            0.05, 0.1, 0.9, 0.70)
         # boton de regreso a Menu Principal
         tk.Label(self, text="Felicidades por su compra, Le Esperamos!!!", font=('Helvetica', '15', 'bold'), fg='green').place(relx=0.25, rely=0.80)
         tk.Button(self, text="Aceptar",

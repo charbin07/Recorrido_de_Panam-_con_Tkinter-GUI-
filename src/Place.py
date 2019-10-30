@@ -11,7 +11,6 @@ class Place():
     def getFileInfo(self, src):
         try:
             with open(src, encoding="utf-8") as f:
-                # for line in f.readlines():
                 text = f.read()
         except FileNotFoundError:
             text = None

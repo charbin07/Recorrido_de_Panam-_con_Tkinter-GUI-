@@ -109,16 +109,16 @@ class MainMenu(tk.Frame):
         bgImage.place(x=0, y=0)
 
     def BotonesMapa(self):
-        tk.Button(self.master, text="Bocas del toro", command=lambda: self.CapturePlace(Bocas)).place(x=30, y=75)
+        tk.Button(self.master, text="Bocas del toro", command=lambda: self.CapturePlace(Bocas)).place(x=40, y=75)
         tk.Button(self.master, text="Coclé", command=lambda: self.CapturePlace(Cocle)).place(x=510, y=230)
         tk.Button(self.master, text="Colón", command=lambda: self.CapturePlace(Colon)).place(x=500, y=130)
-        tk.Button(self.master, text="Chiriquí", command=lambda: self.CapturePlace(Chiriqui)).place(x=75, y=210)
+        tk.Button(self.master, text="Chiriquí", command=lambda: self.CapturePlace(Chiriqui)).place(x=80, y=230)
         tk.Button(self.master, text="Darién", command=lambda: self.CapturePlace(Darien)).place(x=1000, y=290)
-        tk.Button(self.master, text="Herrera", command=lambda: self.CapturePlace(Herrera)).place(x=460, y=350)
-        tk.Button(self.master, text="Los Santos", command=lambda: self.CapturePlace(LosSantos)).place(x=510, y=420)
+        tk.Button(self.master, text="Herrera", command=lambda: self.CapturePlace(Herrera)).place(x=470, y=350)
+        tk.Button(self.master, text="Los Santos", command=lambda: self.CapturePlace(LosSantos)).place(x=510, y=450)
         tk.Button(self.master, text="Panamá", command=lambda: self.CapturePlace(Panama)).place(x=750, y=80)
         tk.Button(self.master, text="Veraguas", command=lambda: self.CapturePlace(Veraguas)).place(x=340, y=300)
-        tk.Button(self.master, text="Guna Yala", command=lambda: self.CapturePlace(Guna)).place(x=980, y=60)
+        tk.Button(self.master, text="Guna Yala", command=lambda: self.CapturePlace(Guna)).place(x=950, y=60)
         tk.Button(self.master, text="Emberá\n Wounaan", command=lambda: self.CapturePlace(Embera)).place(x=1100, y=250)
         tk.Button(self.master, text="Ngobe Bugle", command=lambda: self.CapturePlace(Ngobe)).place(x=220, y=190)
         tk.Button(self.master, text="Panamá\n Oeste", command=lambda: self.CapturePlace(PanamaOeste)).place(x=620, y=160)
@@ -153,18 +153,19 @@ class LugarMenu(tk.Frame):
         self.master = master
 
         tk.Frame.__init__(self, self.master)
-        canvas = tk.Canvas(self, width=1000, height=700)
+        canvas = tk.Canvas(self, width=1200, height=700)
         canvas.pack()
 
         # título de la pantalla Menu
-        tk.Label(text=self.master.userOption.Name(), font=('Helvetica', '25', 'bold')).place(x=450, y=10)
+        tk.Label(text=self.master.userOption.Name(), font=('Helvetica', '25', 'bold')).place(x=500, y=0)
 
         #imagen del Lugar7
-        self.master.MakeImage(self.master.userOption.getImageLink(), 0.025, 0.1, 0.45, 0.5)
-
+        self.master.MakeImage(self.master.userOption.getImageLink(), 0.025, 0.05, 0.45, 0.7)
+        leyendaLugar = tk.Label(self, text="Mapa de " + str(self.master.userOption.Name()), font={'Helvetica', 20,'bold'})
+        leyendaLugar.place(relx=0.05, rely=0.8)
 
         #descripcion de provincia 0 comarca
-        self.master.MakeTextBox(self.master.userOption.getDescription(), 0.5, 0.10, 0.48, 0.5 )
+        self.master.MakeTextBox(self.master.userOption.getDescription(), 0.5, 0.10, 0.48, 0.35)
 
         #submenu con las zonas del Lugar(cambio a pagina 3)
         self.zones_subMenu = tk.Menubutton(self, text="zonas turisticas disponibles", font={'Arial', 16}, relief=tk.RAISED)
@@ -175,7 +176,7 @@ class LugarMenu(tk.Frame):
         self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(1).Name(), command=lambda: self.CapturePlace(1))
         self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(2).Name(), command=lambda: self.CapturePlace(2))
         self.zones_subMenu.menu.add_command(label=self.master.userOption.getZone(3).Name(), command=lambda: self.CapturePlace(3))
-        self.zones_subMenu.place(relx=0.6, rely=0.65)
+        self.zones_subMenu.place(relx=0.5, rely=0.75)
 
         #boton de regreso a Menu Principal
         backButtom = tk.Button(self, text="Regresar a MenuPrincipal", command=lambda: self.master.switch_frame(MainMenu))
@@ -196,7 +197,7 @@ class ZonaMenu(tk.Frame):
         canvas.pack()
 
         #título de la pantalla 2
-        tk.Label(text=self.master.userZoneSelected.Name(), font=('Helvetica', '25', 'bold')).place(x=450, y=10)
+        tk.Label(text=self.master.userZoneSelected.Name(), font=('Helvetica', '25', 'bold')).place(x=400, y=0)
 
         #Descripcion de la zona escogida
         self.master.MakeTextBox(self.master.userZoneSelected.getDescription(), 0.5, 0.10, 0.48, 0.5)
@@ -225,19 +226,19 @@ class UserDataMenu(tk.Frame):
         #widgets para conseguir datos de usuario
         x = 0.01
         y = 0.6
-        userName   = self.master.MakeInputBox("Nombre Completo ", x, y)
-        id         = self.master.MakeInputBox("Cédula",x, y+0.1)
+        userName   = self.master.MakeInputBox("Nombre Apellido", x, y)
+        id         = self.master.MakeInputBox("Cedula", x, y+0.1)
         country    = self.master.MakeInputBox("Gentilicio", x, y+0.2)
-        phone      = self.master.MakeInputBox("Teléfono", x, y+0.3)
-        jubilado   = self.master.MakeCheckBox("Jubilado?", 0.30, y)
-        companions = self.master.MakeSpinBox("N° de acompañantes", 0, 10, 0.3, y+0.1)
-        sex        = self.master.MakeRadioButtom("Sexo:","Masculino","Femenino", 0.30, y+0.2)
+        phone      = self.master.MakeInputBox("Numero de telefono", x, y+0.3)
+        jubilado   = self.master.MakeCheckBox("Jubilado?", 0.25, y)
+        companions = self.master.MakeSpinBox("N° de acompañantes", 0, 10, 0.25, y+0.1)
+        sex        = self.master.MakeRadioButtom("Sexo", "Masculino", "Femenino", 0.25, y+0.2)
         dataArray  = [userName, id, sex, country, phone, companions, jubilado]
 
         # boton de captura de dato(ABONO) y cambio a siguiente frame
-        tk.Button(self, text="ABONAR",bg = 'grey', command=lambda: self.CaptureUserData(dataArray, 1)).place(relx=0.70, rely=0.80)
+        tk.Button(self, text="ABONAR", command=lambda: self.CaptureUserData(dataArray, 1)).place(relx=0.70, rely=0.80)
         # boton de captura de dato(RESERVAR) y cambio a siguiente frame
-        reservaButtom = tk.Button(self, text="PAGAR", bg='grey', command=lambda: self.CaptureUserData(dataArray, 2))
+        reservaButtom = tk.Button(self, text="PAGAR", command=lambda: self.CaptureUserData(dataArray, 2))
         reservaButtom.place(relx=0.80, rely=0.80)
 
         # boton de regreso a Menu Principal

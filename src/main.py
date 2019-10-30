@@ -3,6 +3,7 @@ from src.Place import *
 from src.User import *
 from dataclasses import dataclass
 #struct q almacena informacion acerca de las compras de un usuario
+#me permite crear el carrito de compras
 @dataclass
 class Comprador:
     userName: str
@@ -20,6 +21,7 @@ DESCUENTO_COMPRA_SUPERIOR = 5/100.0
 
 
 #Clase base que controla los frames, recursos y switches del programa
+
 class SampleApp(tk.Tk):
     def __init__(self):
         #setea tkinter
@@ -77,8 +79,9 @@ class SampleApp(tk.Tk):
         imgObj.image = img
         imgObj.place(relx=x, rely=y, relwidth=w, relheight=h)
 
+#Cada subclase q herede de tk.Frame representa un frame de del programa
 
-#Cada subclase representa un subframde del programa
+#Esta es el frame  de entrada del programa
 class MainMenu(tk.Frame):
     def __init__(self, master): #master representa la clase padre, todos las subclases deben incluirlo
         #setup del frame y recursos
@@ -146,7 +149,6 @@ class MainMenu(tk.Frame):
         self.master.switch_frame(LugarMenu)
 
 
-
 #Esta frame se activa al seleccionar un Lugar del mapa
 class LugarMenu(tk.Frame):
     def __init__(self, master):
@@ -187,6 +189,7 @@ class LugarMenu(tk.Frame):
         self.master.userZoneSelected = self.master.userOption.getZone(userZoneIndex)
         print(self.master.userZoneSelected.Name())
         self.master.switch_frame(ZonaMenu)
+
 
 #clase que maneja las zonas turisticas
 class ZonaMenu(tk.Frame):
@@ -238,8 +241,7 @@ class UserDataMenu(tk.Frame):
         # boton de captura de dato(ABONO) y cambio a siguiente frame
         tk.Button(self, text="ABONAR", command=lambda: self.CaptureUserData(dataArray, 1)).place(relx=0.70, rely=0.80)
         # boton de captura de dato(RESERVAR) y cambio a siguiente frame
-        reservaButtom = tk.Button(self, text="PAGAR", command=lambda: self.CaptureUserData(dataArray, 2))
-        reservaButtom.place(relx=0.80, rely=0.80)
+        tk.Button(self, text="PAGAR", command=lambda: self.CaptureUserData(dataArray, 2)).place(relx=0.80, rely=0.80)
 
         # boton de regreso a Menu Principal
         backButtom = tk.Button(self, text="Regresar a Menu de Zonas", command=lambda: self.master.switch_frame(ZonaMenu))
@@ -249,11 +251,72 @@ class UserDataMenu(tk.Frame):
         #obj que almacena todos los datos del usuario
         self.master.USER = User(userData[0].get(), userData[1].get(), userData[2].get(), userData[3].get(), userData[4].get(), userData[5].get(), userData[6].get())
         if formaPago == 1:
-            self.master.switch_frame(FacturaFrame)
+            self.master.switch_frame(FacturaAbonoFrame)
         else:
-            self.master.switch_frame(FacturaFrame)
+            self.master.switch_frame(FacturaPagoFrame)
 
-class FacturaFrame(tk.Frame):
+
+class FacturaAbonoFrame(tk.Frame):
+    def __init__(self, master):
+        self.master = master
+        tk.Frame.__init__(self, master)
+        canvas = tk.Canvas(self, width=1000, height=800)
+        canvas.pack()
+        tk.Label(self, text="Factura Final", font=('Helvetica', '25', 'bold')).place(x=400, y=0)
+
+        # obtiene el subtotal a partir del precio x cabeza
+        SUBTOTAL = self.master.userZoneSelected.getPrice() * (self.master.USER.Companions() + 1) if (
+                    self.master.USER.Companions() > 0) else self.master.userZoneSelected.getPrice()
+        # calcula el total final de la factura factura final
+        self.TOTALFINAL = self.CalcularPrecioFinal(SUBTOTAL)
+        # Imprime la factura en pantalla
+        self.master.MakeTextBox(
+            "Empresa: Kalidoso Tours\n" +
+            "Ubicacion:" + self.master.userOption.Name() + ", " + self.master.userZoneSelected.Name() +
+            "\nDescripcion de Zona: " + self.master.userZoneSelected.getDescription() + "\n" +
+            self.master.USER.GetData() +
+            "\nSUBTOTAL: $" + str(SUBTOTAL) +
+            "\nDescuento Jubilado(10%): $" + str(self.descuentoJubilado) + "\tDescuento x personas(15%): $" + str(
+                self.decuentoCompanions) + "\tDescuento x precio(5%): $"
+            + str(self.descuentoPrecio) +
+            "\nTOTAL: $" + str(self.TOTALFINAL),
+            0.05, 0.1, 0.9, 0.50)
+
+        #casilla donde el usuario pone su abono inicial
+        abono = self.master.MakeInputBox("Abono Inicial: ", 0.25, 0.75)
+        tk.Button(self, text="Aceptar Abono", command=lambda: self.CaptureTransaction(abono)).place(relx=0.45, rely=0.85)
+
+    def CalcularPrecioFinal(self, subTotal):
+        # variables para almacenar los futuros descuentos
+        self.descuentoJubilado = 0.0
+        self.decuentoCompanions = 0.0
+        self.descuentoPrecio = 0.0
+        # Verificamos y calculamos si se pueden aplicar descuentos
+        if (self.master.USER.jubilado):
+            self.descuentoJubilado = subTotal * DESCUENTO_JUBILADO
+
+        if (self.master.USER.Companions() >= 3):
+            self.decuentoCompanions = subTotal * DESCUENTO_PERSONAS
+
+        if (self.master.userZoneSelected.getPrice() > 2000.0):
+            self.descuentoPrecio = subTotal * DESCUENTO_COMPRA_SUPERIOR
+        # retoramos el precio Final
+        return subTotal - (self.descuentoJubilado + self.decuentoCompanions + self.descuentoPrecio)
+
+    def CaptureTransaction(self, amount):
+        # crea una ventana emergente con el mensaje fina; y muestra la cantidad adeudada
+        top = tk.Toplevel(width=700, height=200, bg='gray', bd=1)
+        x = 10
+        tk.Label(top, text="Usted a abonado " + str(amount.get()) + ", Cancele su deuda para gozar de beneficios",
+                 font=('Helvetica', '10', 'bold')).place(x=x, y=25)
+        listaDeCompradores.append(
+            Comprador(self.master.USER.Name(), self.master.USER.Companions(), self.master.userZoneSelected.Name(),
+                      "ABONO", self.TOTALFINAL - float(amount.get())))
+        self.master.switch_frame(MainMenu)
+        top.mainloop()
+
+
+class FacturaPagoFrame(tk.Frame):
     def __init__(self, master):
         self.master = master#permite recuperar datos de otras clases
         tk.Frame.__init__(self, master)
@@ -278,7 +341,7 @@ class FacturaFrame(tk.Frame):
             0.05, 0.1, 0.9, 0.50)
         # boton de regreso a Menu Principal
         tk.Label(self, text="Felicidades por su compra, Le Esperamos!!!", font=('Helvetica', '15', 'bold'), fg='green').place(relx=0.25, rely=0.80)
-        tk.Button(self, text="Ir a Menu Principal",
+        tk.Button(self, text="Aceptar",
                                command=lambda: self.CaptureTransaction()).place(relx=0.45, rely=0.85)
 
     def CalcularPrecioFinal(self, subTotal):
@@ -302,10 +365,6 @@ class FacturaFrame(tk.Frame):
     def CaptureTransaction(self):
         listaDeCompradores.append(Comprador(self.master.USER.Name(), self.master.USER.Companions(), self.master.userZoneSelected.Name(), "PAGO", self.TOTALFINAL))
         self.master.switch_frame(MainMenu)
-
-
-
-
 
 
 #main thread, aqui se ejecuta el programa
